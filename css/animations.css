@@ -109,6 +109,19 @@
   }
 }
 
+/* Navbar Hairline Gradient Shimmer */
+@keyframes navShimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 /* Reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
