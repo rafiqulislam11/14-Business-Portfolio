@@ -5,6 +5,7 @@
 
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
+  initColorPaletteCustomizer();
   initScrollHeader();
   initLiveClock();
   initLanguageSwitcher();
@@ -533,5 +534,264 @@ function initHeroCarousel() {
   // Initialize first slide
   updateSlide(0);
   startAutoPlay();
+}
+
+/**
+ * 11. Interactive Live Theme & Color Palette Customizer
+ */
+const RI_PALETTES = {
+  aurora: {
+    id: "aurora",
+    nameEn: "Cyber Aurora",
+    nameBn: "সাইবার অরোরা",
+    descEn: "Electric Indigo & Vivid Cyan (Default Notun Style)",
+    descBn: "ইলেকট্রিক ইন্ডিগো ও সায়ান (নতুন স্টাইল)",
+    dots: ["#4f46e5", "#06b6d4", "#ec4899"],
+    primary: "#4f46e5"
+  },
+  amethyst: {
+    id: "amethyst",
+    nameEn: "Royal Amethyst",
+    nameBn: "রয়্যাল অ্যামিথিস্ট",
+    descEn: "Imperial Purple & Fuchsia Rose",
+    descBn: "ইম্পেরিয়াল পার্পল ও ফুসিয়া রোজ",
+    dots: ["#7c3aed", "#ec4899", "#f43f5e"],
+    primary: "#7c3aed"
+  },
+  sapphire: {
+    id: "sapphire",
+    nameEn: "Ocean Sapphire",
+    nameBn: "ওশান স্যাফায়ার",
+    descEn: "Vivid Cobalt & Ocean Mint Teal",
+    descBn: "কোবাল্ট ব্লু ও ওশান মিন্ট টিল",
+    dots: ["#0284c7", "#0d9488", "#38bdf8"],
+    primary: "#0284c7"
+  },
+  emerald: {
+    id: "emerald",
+    nameEn: "Emerald Obsidian",
+    nameBn: "এমেরাল্ড ওবসিডিয়ান",
+    descEn: "Cyber Emerald & Mint Jade",
+    descBn: "সাইবার এমেরাল্ড ও মিন্ট জেড",
+    dots: ["#059669", "#10b981", "#34d399"],
+    primary: "#059669"
+  },
+  sunset: {
+    id: "sunset",
+    nameEn: "Sunset Amber",
+    nameBn: "সানসেট অ্যাম্বার",
+    descEn: "Solar Amber & Crimson Flame",
+    descBn: "সোলার গোল্ড ও ক্রিমসন ফ্লেম",
+    dots: ["#ea580c", "#f59e0b", "#f43f5e"],
+    primary: "#ea580c"
+  }
+};
+
+function initColorPaletteCustomizer() {
+  const currentLang = localStorage.getItem("ri_agency_lang") || "en";
+  const storedPalette = localStorage.getItem("ri_theme_palette") || "aurora";
+  const storedCustomColor = localStorage.getItem("ri_custom_brand_color") || "#4f46e5";
+
+  // Apply initial palette immediately
+  applySitePalette(storedPalette, storedCustomColor);
+
+  // Inject header palette button into .header-actions if not already present
+  const headerActions = document.querySelector(".header-actions");
+  if (headerActions && !document.getElementById("palette-header-btn")) {
+    const paletteHeaderBtn = document.createElement("button");
+    paletteHeaderBtn.className = "palette-header-btn";
+    paletteHeaderBtn.id = "palette-header-btn";
+    paletteHeaderBtn.setAttribute("aria-label", "Color Palette Settings");
+    paletteHeaderBtn.setAttribute("title", "Customize Website Colors / কালার পরিবর্তন করুন");
+    paletteHeaderBtn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>`;
+
+    const themeToggle = headerActions.querySelector(".theme-toggle");
+    if (themeToggle) {
+      headerActions.insertBefore(paletteHeaderBtn, themeToggle.nextSibling);
+    } else {
+      headerActions.prepend(paletteHeaderBtn);
+    }
+  }
+
+  // Inject floating launcher button if not present
+  if (!document.getElementById("palette-launcher-btn")) {
+    const floatBtn = document.createElement("button");
+    floatBtn.className = "palette-launcher-float";
+    floatBtn.id = "palette-launcher-btn";
+    floatBtn.setAttribute("aria-label", "Customize Website Colors");
+    floatBtn.setAttribute("title", "Customize Website Colors / কালার পরিবর্তন করুন");
+    floatBtn.innerHTML = `
+      <span class="palette-launcher-icon">🎨</span>
+      <span class="palette-launcher-text" data-en="Theme Colors" data-bn="থিম কালার">${currentLang === "bn" ? "থিম কালার" : "Theme Colors"}</span>
+    `;
+    document.body.appendChild(floatBtn);
+  }
+
+  // Inject modal drawer overlay if not present
+  if (!document.getElementById("palette-drawer-overlay")) {
+    const overlay = document.createElement("div");
+    overlay.className = "palette-drawer-overlay";
+    overlay.id = "palette-drawer-overlay";
+    overlay.setAttribute("role", "dialog");
+    overlay.setAttribute("aria-modal", "true");
+    overlay.setAttribute("aria-label", "Color Palette Customizer");
+
+    const presetsHtml = Object.values(RI_PALETTES).map(p => `
+      <button class="palette-preset-item ${p.id === storedPalette ? "active" : ""}" data-palette-id="${p.id}">
+        <div class="palette-item-left">
+          <div class="palette-preview-dots">
+            ${p.dots.map(color => `<span class="palette-dot" style="background-color: ${color}"></span>`).join("")}
+          </div>
+          <div>
+            <span class="palette-name" data-en="${p.nameEn}" data-bn="${p.nameBn}">${currentLang === "bn" ? p.nameBn : p.nameEn}</span>
+            <span class="palette-desc" data-en="${p.descEn}" data-bn="${p.descBn}">${currentLang === "bn" ? p.descBn : p.descEn}</span>
+          </div>
+        </div>
+        <svg class="palette-check-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </button>
+    `).join("");
+
+    overlay.innerHTML = `
+      <div class="palette-drawer-card">
+        <div class="palette-drawer-header">
+          <div class="palette-drawer-title">
+            <span>🎨</span>
+            <span data-en="Theme &amp; Color Style" data-bn="থিম ও কালার স্টাইল">${currentLang === "bn" ? "থিম ও কালার স্টাইল" : "Theme &amp; Color Style"}</span>
+          </div>
+          <button class="palette-drawer-close" id="palette-drawer-close-btn" aria-label="Close customizer">✕</button>
+        </div>
+
+        <div class="palette-drawer-body">
+          <div>
+            <div class="palette-section-label">
+              <span>✨</span>
+              <span data-en="Preset Luxury Styles" data-bn="লাক্সারি কালার স্টাইলসমূহ">${currentLang === "bn" ? "লাক্সারি কালার স্টাইলসমূহ" : "Preset Luxury Styles"}</span>
+            </div>
+            <div class="palette-presets-list" id="palette-presets-list">
+              ${presetsHtml}
+            </div>
+          </div>
+
+          <div>
+            <div class="palette-section-label">
+              <span>🎛️</span>
+              <span data-en="Custom Primary Accent" data-bn="কাস্টম অ্যাকসেন্ট কালার">${currentLang === "bn" ? "কাস্টম অ্যাকসেন্ট কালার" : "Custom Primary Accent"}</span>
+            </div>
+            <div class="palette-custom-box">
+              <div class="palette-custom-left">
+                <span class="palette-custom-title" data-en="Pick Custom Brand Color" data-bn="পছন্দের কালার সিলেক্ট করুন">${currentLang === "bn" ? "পছন্দের কালার সিলেক্ট করুন" : "Pick Custom Brand Color"}</span>
+                <span class="palette-custom-subtitle" data-en="Generates dynamic matching gradients" data-bn="স্বয়ংক্রিয়ভাবে গ্র্যাডিয়েন্ট তৈরি হবে">${currentLang === "bn" ? "স্বয়ংক্রিয়ভাবে গ্র্যাডিয়েন্ট তৈরি হবে" : "Generates dynamic matching gradients"}</span>
+              </div>
+              <input type="color" class="palette-color-input" id="palette-custom-color-input" value="${storedCustomColor}" title="Choose color">
+            </div>
+          </div>
+
+          <div class="palette-drawer-footer">
+            <button class="palette-reset-btn" id="palette-reset-btn" data-en="↺ Reset Default" data-bn="↺ ডিফল্ট কালার">${currentLang === "bn" ? "↺ ডিফল্ট কালার" : "↺ Reset Default"}</button>
+            <button class="palette-done-btn" id="palette-done-btn" data-en="Apply &amp; Close" data-bn="সেভ ও বন্ধ করুন">${currentLang === "bn" ? "সেভ ও বন্ধ করুন" : "Apply &amp; Close"}</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+  }
+
+  // Attach Event Handlers
+  const overlay = document.getElementById("palette-drawer-overlay");
+  const openBtns = [document.getElementById("palette-launcher-btn"), document.getElementById("palette-header-btn")].filter(Boolean);
+  const closeBtn = document.getElementById("palette-drawer-close-btn");
+  const doneBtn = document.getElementById("palette-done-btn");
+  const resetBtn = document.getElementById("palette-reset-btn");
+  const customInput = document.getElementById("palette-custom-color-input");
+
+  const openDrawer = () => {
+    if (overlay) overlay.classList.add("active");
+  };
+
+  const closeDrawer = () => {
+    if (overlay) overlay.classList.remove("active");
+  };
+
+  openBtns.forEach(btn => btn.addEventListener("click", openDrawer));
+  if (closeBtn) closeBtn.addEventListener("click", closeDrawer);
+  if (doneBtn) doneBtn.addEventListener("click", closeDrawer);
+
+  if (overlay) {
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) closeDrawer();
+    });
+  }
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && overlay && overlay.classList.contains("active")) {
+      closeDrawer();
+    }
+  });
+
+  // Preset button clicks
+  const presetItems = document.querySelectorAll(".palette-preset-item");
+  presetItems.forEach(item => {
+    item.addEventListener("click", () => {
+      const paletteId = item.getAttribute("data-palette-id");
+      applySitePalette(paletteId);
+      presetItems.forEach(pi => pi.classList.remove("active"));
+      item.classList.add("active");
+    });
+  });
+
+  // Custom color input handler
+  if (customInput) {
+    customInput.addEventListener("input", (e) => {
+      const color = e.target.value;
+      applySitePalette("custom", color);
+      presetItems.forEach(pi => pi.classList.remove("active"));
+    });
+  }
+
+  // Reset to default
+  if (resetBtn) {
+    resetBtn.addEventListener("click", () => {
+      applySitePalette("aurora");
+      presetItems.forEach(pi => {
+        if (pi.getAttribute("data-palette-id") === "aurora") {
+          pi.classList.add("active");
+        } else {
+          pi.classList.remove("active");
+        }
+      });
+      if (customInput) customInput.value = "#4f46e5";
+    });
+  }
+}
+
+function applySitePalette(paletteId, customColor) {
+  const root = document.documentElement;
+  
+  if (paletteId === "custom" && customColor) {
+    root.setAttribute("data-palette", "custom");
+    localStorage.setItem("ri_theme_palette", "custom");
+    localStorage.setItem("ri_custom_brand_color", customColor);
+
+    // Generate dynamic complementary gradient and glow
+    root.style.setProperty("--brand-primary", customColor);
+    root.style.setProperty("--brand-primary-hover", customColor);
+    root.style.setProperty("--accent-badge-text", customColor);
+    root.style.setProperty("--shadow-glow", `0 0 32px ${customColor}50`);
+    root.style.setProperty("--brand-gradient", `linear-gradient(135deg, ${customColor} 0%, #06b6d4 100%)`);
+    root.style.setProperty("--brand-gradient-text", `linear-gradient(135deg, ${customColor} 0%, #06b6d4 50%, #ec4899 100%)`);
+  } else {
+    // Clear inline overrides so CSS tokens take over
+    root.style.removeProperty("--brand-primary");
+    root.style.removeProperty("--brand-primary-hover");
+    root.style.removeProperty("--accent-badge-text");
+    root.style.removeProperty("--shadow-glow");
+    root.style.removeProperty("--brand-gradient");
+    root.style.removeProperty("--brand-gradient-text");
+
+    const validPalette = RI_PALETTES[paletteId] ? paletteId : "aurora";
+    root.setAttribute("data-palette", validPalette);
+    localStorage.setItem("ri_theme_palette", validPalette);
+  }
 }
 
