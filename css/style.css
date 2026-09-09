@@ -3420,3 +3420,110 @@ textarea.form-control {
   }
 }
 
+/* ==========================================================================
+   ULTRA-SLIM FLOATING QUICK-ACTION DOCK & BACK-TO-TOP
+   ========================================================================== */
+
+.floating-quick-dock {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 997;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Back to Top 3D Button */
+.back-to-top-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 
+    0 4px 14px rgba(0, 0, 0, 0.12),
+    0 8px 24px -4px var(--shadow-glow),
+    inset 0 1.5px 1.5px rgba(255, 255, 255, 0.8),
+    inset 0 -1.5px 2px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px) scale(0.9);
+  transition: all var(--transition-normal);
+}
+
+.back-to-top-btn.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.back-to-top-btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  border-color: var(--brand-primary);
+  color: var(--brand-primary);
+  box-shadow: 
+    0 6px 20px rgba(0, 0, 0, 0.18),
+    0 12px 30px -4px var(--shadow-glow),
+    inset 0 1.5px 1.5px rgba(255, 255, 255, 0.95);
+}
+
+.back-to-top-btn:active {
+  transform: translateY(1px) scale(0.96);
+}
+
+/* Desktop Quick WhatsApp Contact Pill in Dock */
+.quick-dock-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.6rem 1.15rem;
+  background: linear-gradient(180deg, #34d399 0%, #10b981 35%, #059669 75%, #064e3b 100%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: var(--radius-full);
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 
+    inset 0 1.5px 1.5px rgba(255, 255, 255, 0.75),
+    inset 0 -1.5px 2px rgba(6, 78, 59, 0.5),
+    0 3px 0 #064e3b,
+    0 6px 18px rgba(16, 185, 129, 0.45);
+  transition: all var(--transition-fast);
+}
+
+.quick-dock-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    inset 0 1.5px 1.5px rgba(255, 255, 255, 0.9),
+    inset 0 -1.5px 2px rgba(6, 78, 59, 0.5),
+    0 4.5px 0 #064e3b,
+    0 10px 24px rgba(16, 185, 129, 0.55);
+  color: #ffffff;
+}
+
+.quick-dock-cta:active {
+  transform: translateY(1.5px);
+  box-shadow: 
+    inset 0 1.5px 2px rgba(0, 0, 0, 0.4),
+    0 1px 0 #064e3b;
+}
+
+@media (max-width: 768px) {
+  .floating-quick-dock {
+    bottom: calc(75px + env(safe-area-inset-bottom));
+    right: 16px;
+  }
+  
+  .quick-dock-cta {
+    display: none; /* Mobile already has mobile-sticky-cta */
+  }
+}
+

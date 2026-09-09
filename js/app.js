@@ -6,6 +6,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
   initColorPaletteCustomizer();
+  initFloatingQuickDock();
   initScrollHeader();
   initLiveClock();
   initLanguageSwitcher();
@@ -793,5 +794,52 @@ function applySitePalette(paletteId, customColor) {
     root.setAttribute("data-palette", validPalette);
     localStorage.setItem("ri_theme_palette", validPalette);
   }
+}
+
+/**
+ * 12. Ultra-Slim Floating Quick-Action Dock & Back-to-Top Controller
+ */
+function initFloatingQuickDock() {
+  if (document.getElementById("floating-quick-dock")) return;
+
+  const currentLang = localStorage.getItem("ri_agency_lang") || "en";
+  const quickDock = document.createElement("div");
+  quickDock.className = "floating-quick-dock";
+  quickDock.id = "floating-quick-dock";
+
+  quickDock.innerHTML = `
+    <a href="https://wa.me/8801310824987?text=Hello%20RI%20Creative%20Agency,%20I%20would%20like%20to%20consult%20about%20a%20project." target="_blank" rel="noopener noreferrer" class="quick-dock-cta" aria-label="Direct WhatsApp Consultation" title="WhatsApp Direct Chat">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.311.045-.698.058-2.221-.572-1.747-.723-2.87-2.502-2.957-2.617-.087-.116-.708-.941-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.173.086.275.072.376-.044.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.043.073.043.419-.101.824z"/></svg>
+      <span data-en="Chat with Us" data-bn="হোয়াটসঅ্যাপে কথা বলুন">${currentLang === "bn" ? "হোয়াটসঅ্যাপে কথা বলুন" : "Chat with Us"}</span>
+    </a>
+    <button class="back-to-top-btn" id="back-to-top-btn" aria-label="Scroll back to top" title="Back to Top / পেজের উপরে যান">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="19" x2="12" y2="5"></line>
+        <polyline points="5 12 12 5 19 12"></polyline>
+      </svg>
+    </button>
+  `;
+
+  document.body.appendChild(quickDock);
+
+  const backToTopBtn = document.getElementById("back-to-top-btn");
+
+  const toggleScrollBtn = () => {
+    if (window.scrollY > 280) {
+      backToTopBtn.classList.add("visible");
+    } else {
+      backToTopBtn.classList.remove("visible");
+    }
+  };
+
+  window.addEventListener("scroll", toggleScrollBtn, { passive: true });
+  toggleScrollBtn();
+
+  backToTopBtn.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  });
 }
 
