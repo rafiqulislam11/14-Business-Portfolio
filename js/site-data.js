@@ -1026,98 +1026,914 @@ const SITE_DATA = {
     }
   ],
 
-  // Pricing & Flexible Packages
+  // Pricing & Flexible Packages (4-Tier Model: BASIC, STANDARD, PREMIUM, CUSTOM)
   packages: [
     {
-      name: "Starter / Basic",
-      badge: "Individuals & Essentials",
-      summary: "Ideal for individuals, new freelancers, or single project requirements starting their digital presence.",
+      id: "pkg-basic",
+      name: "BASIC",
+      badge: "Simple Requirements",
+      subtitle: "For individuals, single tasks, and essential setups",
+      isPopular: false,
+      startingPrice: "৳1,500 / $25",
+      priceNum: 1500,
+      deliveryTime: "24 – 48 Hours",
+      revisions: "2 Revisions Included",
+      fileFormats: "JPG, PNG, Print PDF",
+      support: "WhatsApp Business Hours Support",
+      summary: "Ideal for new freelancers, individuals, or single-asset design and digital tasks starting out.",
       highlights: [
-        "Single platform focus (e.g. 1 Profile setup or 1 Graphic design)",
-        "Essential SEO & metadata optimization",
-        "Direct communication & initial revision rounds",
-        "Full commercial rights on deliverables",
-        "WhatsApp setup guidance"
+        "Single platform focus or single design asset",
+        "Essential metadata and formatting check",
+        "High-resolution 300 DPI export files",
+        "Standard 24-48 hours turnaround",
+        "Direct WhatsApp setup assistance"
       ],
-      ctaText: "Request Starter Quote",
-      whatsappMsg: "Hello RI Creative Agency, I am interested in the Starter Package. Please provide a custom quote."
+      ctaText: "Choose Basic Package",
+      whatsappMsg: "Hello RI Creative Agency, I would like to choose the BASIC Package. Let's discuss my project."
     },
     {
-      name: "Standard / Growth",
-      badge: "Growing Businesses & Creators",
+      id: "pkg-standard",
+      name: "STANDARD ⭐",
+      badge: "Most Popular",
+      subtitle: "For growing businesses, creators, and authors",
       isPopular: true,
-      summary: "Designed for small businesses, authors, and creators looking for a complete, multi-asset digital solution.",
+      startingPrice: "৳4,500 / $60",
+      priceNum: 4500,
+      deliveryTime: "2 – 4 Days",
+      revisions: "5 Revisions Included",
+      fileFormats: "Vector AI, SVG, PNG, PDF, PSD, DOCX",
+      support: "Priority WhatsApp & Direct Phone Support",
+      summary: "Complete multi-asset solution designed for expanding businesses, authors, and creators looking for market impact.",
       highlights: [
-        "Multi-asset deliverable package (e.g. Full KDP book or multi-page website)",
-        "In-depth market & competitor research",
-        "Custom branding & color calibration",
-        "Enhanced revisions & priority execution",
-        "Comprehensive handover & launch support"
+        "Multi-asset package (e.g. Full KDP book or multi-page website)",
+        "In-depth competitor and keyword search research",
+        "Editable vector source files (AI, SVG, PDF)",
+        "5 rounds of focused revisions included",
+        "Complete pre-launch and publishing guidance"
       ],
-      ctaText: "Request Standard Quote",
-      whatsappMsg: "Hello RI Creative Agency, I am interested in the Standard Growth Package. Please provide details."
+      ctaText: "Choose Standard Package",
+      whatsappMsg: "Hello RI Creative Agency, I am interested in your most popular STANDARD Package. Let's start."
     },
     {
-      name: "Premium / Comprehensive",
-      badge: "Complete Digital Turnkey",
-      summary: "Complete turnkey digital solutions for established businesses, high-volume sellers, and organizations.",
+      id: "pkg-premium",
+      name: "PREMIUM",
+      badge: "Professional & Business",
+      subtitle: "For established businesses and turnkey setups",
+      isPopular: false,
+      startingPrice: "৳12,000 / $150",
+      priceNum: 12000,
+      deliveryTime: "5 – 7 Days",
+      revisions: "Unlimited Revisions",
+      fileFormats: "All Formats + Complete Source Code / RAW",
+      support: "24/7 Dedicated Support + 1-on-1 Consultation",
+      summary: "End-to-end multi-channel agency execution with priority strategy sessions and long-term care.",
       highlights: [
-        "End-to-end multi-channel ecosystem setup",
-        "Advanced technical SEO, custom UI/UX, and publishing support",
-        "Complete source files, brand guidelines, and assets",
-        "Priority 1-on-1 consultation sessions with Rafiqul Islam",
-        "Extended post-launch maintenance & guidance"
+        "Turnkey multi-channel execution (Branding + Web + Social + SEO)",
+        "Advanced technical setup, custom UI/UX, and schema markup",
+        "Complete master source files, fonts, and brand assets",
+        "Unlimited revisions until 100% satisfaction",
+        "1-on-1 strategic consultation session with Rafiqul Islam",
+        "30 days post-launch maintenance & guidance"
       ],
-      ctaText: "Request Premium Quote",
-      whatsappMsg: "Hello RI Creative Agency, I would like to discuss a Comprehensive Premium Solution for my business."
+      ctaText: "Choose Premium Package",
+      whatsappMsg: "Hello RI Creative Agency, I want to book the PREMIUM Business Package for my company."
+    },
+    {
+      id: "pkg-custom",
+      name: "CUSTOM",
+      badge: "Special Requirements",
+      subtitle: "Tailored to your specific timeline and scope",
+      isPopular: false,
+      startingPrice: "Custom Quote",
+      priceNum: 0,
+      deliveryTime: "Tailored to Scope",
+      revisions: "Flexible per Agreement",
+      fileFormats: "As Needed (AI, SVG, PDF, Web Code, etc.)",
+      support: "Dedicated Project Manager Support",
+      summary: "Have a unique multi-service scope or enterprise project? We tailor the deliverables, timeline, and pricing exactly to your goals.",
+      highlights: [
+        "Custom combination across any of our 13 divisions",
+        "Milestone-based delivery and structured sprint updates",
+        "Dedicated project tracking and revision management",
+        "Flexible payment terms for enterprise clients",
+        "Formal invoice and delivery agreement"
+      ],
+      ctaText: "Request Custom Quote",
+      whatsappMsg: "Hello RI Creative Agency, I need a CUSTOM quote for a specialized project scope."
     }
   ],
 
-  // Comprehensive FAQs
+  // 12 Client Problem Cards ("What Can We Help You With?")
+  clientProblems: [
+    {
+      id: "prob-logo",
+      question: "Need a Professional Logo?",
+      subtitle: "Unique brand marks that make you instantly recognizable",
+      icon: "🎨",
+      serviceLink: "creative-design.html#logo",
+      serviceId: "creative-design",
+      solution: "Distinctive vector logo design tailored to your industry, delivered with transparent PNGs, print-ready vectors, and color variations.",
+      whatsappMsg: "Hello RI Creative Agency, I need a Professional Logo for my business."
+    },
+    {
+      id: "prob-branding",
+      question: "Need Business Branding?",
+      subtitle: "Cohesive identity from business cards to letterheads",
+      icon: "✨",
+      serviceLink: "creative-design.html#branding",
+      serviceId: "creative-design",
+      solution: "Full brand identity kit including color palettes, typography rules, stationery, social media kits, and comprehensive brand guidelines.",
+      whatsappMsg: "Hello RI Creative Agency, I need complete Business Branding for my company."
+    },
+    {
+      id: "prob-social",
+      question: "Need Social Media Design?",
+      subtitle: "High-converting posts, reels covers & banners",
+      icon: "📱",
+      serviceLink: "social-media.html",
+      serviceId: "social-media",
+      solution: "Platform-optimized post templates, carousel infographics, Facebook covers, YouTube banners, and targeted marketing visuals.",
+      whatsappMsg: "Hello RI Creative Agency, I need Social Media Design and marketing graphics."
+    },
+    {
+      id: "prob-website",
+      question: "Need a Website?",
+      subtitle: "Modern, high-speed, mobile-first web presence",
+      icon: "⚡",
+      serviceLink: "website-seo.html",
+      serviceId: "website-seo",
+      solution: "Fast, responsive web design built for credibility, conversions, seamless mobile navigation, and Google search readiness.",
+      whatsappMsg: "Hello RI Creative Agency, I need a professional website for my business."
+    },
+    {
+      id: "prob-kdp",
+      question: "Need Amazon KDP Design?",
+      subtitle: "Book covers, manuscript formatting & publishing",
+      icon: "📚",
+      serviceLink: "amazon-kdp.html",
+      serviceId: "amazon-kdp",
+      solution: "Amazon-approved paperback/Kindle interior layouts, calculation of spine width & bleed, eye-catching cover wraps, and keyword metadata.",
+      whatsappMsg: "Hello RI Creative Agency, I need Amazon KDP Book Formatting and Cover Design."
+    },
+    {
+      id: "prob-cv",
+      question: "Need a Professional CV?",
+      subtitle: "ATS-compliant resumes that win interviews",
+      icon: "📄",
+      serviceLink: "career-services.html",
+      serviceId: "career-services",
+      solution: "Modern ATS-friendly CV writing, formatting, executive summaries, matching cover letters, and LinkedIn profile optimization.",
+      whatsappMsg: "Hello RI Creative Agency, I need a Professional CV and Resume service."
+    },
+    {
+      id: "prob-job-apply",
+      question: "Need Online Job Application?",
+      subtitle: "Error-free form submission and document prep",
+      icon: "📝",
+      serviceLink: "job-applications.html",
+      serviceId: "job-applications",
+      solution: "Assistance with official online job portals, government circular applications, photo/signature resizing, and fee guidance.",
+      whatsappMsg: "Hello RI Creative Agency, I need assistance with an Online Job Application."
+    },
+    {
+      id: "prob-print",
+      question: "Need Printing?",
+      subtitle: "Business cards, flyers, banners & certificates",
+      icon: "🖨️",
+      serviceLink: "print-photo.html#printing",
+      serviceId: "print-photo",
+      solution: "Commercial 300 DPI print-ready layouts, paper stock recommendations, and physical printing via our Jamirdia studio lab.",
+      whatsappMsg: "Hello RI Creative Agency, I need commercial Printing services."
+    },
+    {
+      id: "prob-photo",
+      question: "Need Photo Services?",
+      subtitle: "Studio passport photos, retouching & background removal",
+      icon: "📷",
+      serviceLink: "print-photo.html#photo",
+      serviceId: "print-photo",
+      solution: "Embassy-compliant passport size photos, product retouching, precision edge background removal, and color enhancement.",
+      whatsappMsg: "Hello RI Creative Agency, I need Photo Studio and Retouching services."
+    },
+    {
+      id: "prob-marketing",
+      question: "Need Digital Marketing?",
+      subtitle: "YouTube SEO, ad campaigns & organic growth",
+      icon: "🚀",
+      serviceLink: "services.html#marketing",
+      serviceId: "services",
+      solution: "Multi-channel marketing strategy, YouTube video SEO tags, content planning calendars, and targeted Facebook/Instagram ad setups.",
+      whatsappMsg: "Hello RI Creative Agency, I need Digital Marketing and promotion support."
+    },
+    {
+      id: "prob-data-entry",
+      question: "Need Data Entry?",
+      subtitle: "Accurate web research, Excel, Word & PDF conversion",
+      icon: "📊",
+      serviceLink: "services.html#data-entry",
+      serviceId: "services",
+      solution: "Meticulous data processing, spreadsheet formatting, PDF-to-Word/Excel conversions, web research, and clean document management.",
+      whatsappMsg: "Hello RI Creative Agency, I need Data Entry and digital document processing."
+    },
+    {
+      id: "prob-business-support",
+      question: "Need Business Support?",
+      subtitle: "1-on-1 practical IT consultation & strategy",
+      icon: "🎓",
+      serviceLink: "training-consultation.html",
+      serviceId: "training-consultation",
+      solution: "Direct hands-on consultation with founder Rafiqul Islam to solve digital roadblocks, optimize setups, and grow online.",
+      whatsappMsg: "Hello RI Creative Agency, I need Business Consultation and 1-on-1 IT support."
+    }
+  ],
+
+  // 10 Most Popular Services Showcase
+  popularServices: [
+    {
+      id: "pop-logo",
+      title: "Logo Design",
+      category: "Creative Design",
+      startingPrice: "৳1,500 / $25",
+      deliveryTime: "24 – 48 Hours",
+      revisions: "Unlimited Options",
+      icon: "🎨",
+      slug: "creative-design.html#logo",
+      description: "Custom vector logos crafted for modern businesses, startups, and personal brands.",
+      whatsappMsg: "Hello RI Creative Agency, I am interested in Logo Design. I would like to discuss my requirements and package options."
+    },
+    {
+      id: "pop-branding",
+      title: "Brand Identity",
+      category: "Creative Design",
+      startingPrice: "৳5,000 / $70",
+      deliveryTime: "3 – 5 Days",
+      revisions: "Full Support",
+      icon: "✨",
+      slug: "creative-design.html#branding",
+      description: "Complete identity systems: color psychology, typography, stationery, and brand guidelines.",
+      whatsappMsg: "Hello RI Creative Agency, I am interested in complete Brand Identity design for my business."
+    },
+    {
+      id: "pop-social",
+      title: "Social Media Design",
+      category: "Social Media",
+      startingPrice: "৳2,500 / $35",
+      deliveryTime: "2 – 3 Days",
+      revisions: "Included",
+      icon: "📱",
+      slug: "social-media.html",
+      description: "High-CTR banners, engaging carousels, and promotional post graphics across all platforms.",
+      whatsappMsg: "Hello RI Creative Agency, I want to order Social Media Design for my channels."
+    },
+    {
+      id: "pop-web",
+      title: "Website Design",
+      category: "Website & SEO",
+      startingPrice: "৳8,000 / $110",
+      deliveryTime: "5 – 7 Days",
+      revisions: "Priority QA",
+      icon: "⚡",
+      slug: "website-seo.html",
+      description: "Fast, responsive modern websites engineered for high conversions and Google indexing.",
+      whatsappMsg: "Hello RI Creative Agency, I need a professional website. I would like to discuss my project."
+    },
+    {
+      id: "pop-kdp",
+      title: "Amazon KDP",
+      category: "Publishing",
+      startingPrice: "৳3,000 / $40",
+      deliveryTime: "2 – 4 Days",
+      revisions: "Approval Guarantee",
+      icon: "📚",
+      slug: "amazon-kdp.html",
+      description: "Manuscript formatting, paperback/hardcover covers, bleed calculation, and barcode setup.",
+      whatsappMsg: "Hello RI Creative Agency, I need Amazon KDP formatting and cover design."
+    },
+    {
+      id: "pop-cv",
+      title: "CV & Resume",
+      category: "Career Services",
+      startingPrice: "৳800 / $15",
+      deliveryTime: "24 Hours",
+      revisions: "Free Edits",
+      icon: "📄",
+      slug: "career-services.html",
+      description: "ATS-optimized executive resumes, targeted cover letters, and LinkedIn profile overhauls.",
+      whatsappMsg: "Hello RI Creative Agency, I need professional CV/Resume service."
+    },
+    {
+      id: "pop-marketing",
+      title: "Digital Marketing",
+      category: "Digital Growth",
+      startingPrice: "৳4,000 / $55",
+      deliveryTime: "Monthly / Sprints",
+      revisions: "Ongoing Care",
+      icon: "🚀",
+      slug: "services.html#marketing",
+      description: "YouTube SEO, hashtag research, content planning, and multi-platform promotional campaigns.",
+      whatsappMsg: "Hello RI Creative Agency, I need Digital Marketing and promotion support."
+    },
+    {
+      id: "pop-print",
+      title: "Printing",
+      category: "Print & Lab",
+      startingPrice: "৳500 / $10",
+      deliveryTime: "Same Day / 24h",
+      revisions: "Proof Checked",
+      icon: "🖨️",
+      slug: "print-photo.html#printing",
+      description: "High-resolution color printing: business cards, flyers, banners, stickers, and documents.",
+      whatsappMsg: "Hello RI Creative Agency, I need commercial Printing services."
+    },
+    {
+      id: "pop-job-apply",
+      title: "Online Job Application",
+      category: "Local & Career",
+      startingPrice: "৳300 / $5",
+      deliveryTime: "Instant / Same Day",
+      revisions: "Verified Data",
+      icon: "📝",
+      slug: "job-applications.html",
+      description: "Accurate online circular applications, photo/signature formatting, and confirmation tracking.",
+      whatsappMsg: "Hello RI Creative Agency, I need assistance with an Online Job Application."
+    },
+    {
+      id: "pop-photo",
+      title: "Photo Studio",
+      category: "Studio & Lab",
+      startingPrice: "৳200 / $5",
+      deliveryTime: "Instant / 2 Hours",
+      revisions: "Included",
+      icon: "📷",
+      slug: "print-photo.html#photo",
+      description: "Embassy-compliant passport photos, background removal, skin retouching, and lamination.",
+      whatsappMsg: "Hello RI Creative Agency, I need Photo Studio and Retouching services."
+    }
+  ],
+
+  // 12 Client Personas ("Who We Help")
+  whoWeHelp: [
+    {
+      id: "help-individuals",
+      title: "Individuals",
+      subtitle: "Personal projects & digital identity",
+      icon: "👤",
+      recommended: ["Personal Logo", "Passport Photos", "Social Media Graphics"],
+      link: "services.html"
+    },
+    {
+      id: "help-students",
+      title: "Students",
+      subtitle: "Academic formatting, CVs & applications",
+      icon: "🎓",
+      recommended: ["Student CV", "Online Application", "Document Formatting"],
+      link: "career-services.html"
+    },
+    {
+      id: "help-jobseekers",
+      title: "Job Seekers",
+      subtitle: "ATS resumes & interview winning profiles",
+      icon: "💼",
+      recommended: ["ATS Resume", "Cover Letter", "LinkedIn Profile Makeover"],
+      link: "career-services.html"
+    },
+    {
+      id: "help-authors",
+      title: "Authors & Publishers",
+      subtitle: "Amazon KDP covers, interiors & royalties",
+      icon: "📚",
+      recommended: ["KDP Formatting", "Paperback Covers", "Niche Keyword SEO"],
+      link: "amazon-kdp.html"
+    },
+    {
+      id: "help-creators",
+      title: "Content Creators",
+      subtitle: "Thumbnails, branding & visual kits",
+      icon: "🎨",
+      recommended: ["YouTube Thumbnails", "Channel Art", "Instagram Kits"],
+      link: "creative-design.html"
+    },
+    {
+      id: "help-youtubers",
+      title: "YouTubers",
+      subtitle: "High-CTR thumbnails & Channel SEO",
+      icon: "▶️",
+      recommended: ["High-CTR Thumbnails", "YouTube SEO", "Video Watermarks"],
+      link: "social-media.html"
+    },
+    {
+      id: "help-freelancers",
+      title: "Freelancers",
+      subtitle: "Fiverr & Upwork gig optimization",
+      icon: "💻",
+      recommended: ["Fiverr Gig SEO", "Upwork Proposals", "Showcase Portfolios"],
+      link: "marketplace.html"
+    },
+    {
+      id: "help-smallbiz",
+      title: "Small Businesses",
+      subtitle: "Cost-effective branding & online store",
+      icon: "🏪",
+      recommended: ["Business Logo", "Business Cards", "Flyers & Brochures"],
+      link: "creative-design.html"
+    },
+    {
+      id: "help-startups",
+      title: "Startups",
+      subtitle: "Complete brand identity & landing pages",
+      icon: "🚀",
+      recommended: ["Complete Brand Identity", "Modern Website", "Pitch Decks"],
+      link: "website-seo.html"
+    },
+    {
+      id: "help-sellers",
+      title: "Online Sellers",
+      subtitle: "E-Commerce product listings & mockups",
+      icon: "🛍️",
+      recommended: ["Product Mockups", "Etsy / Shopify Setup", "Ad Creatives"],
+      link: "marketplace.html"
+    },
+    {
+      id: "help-agencies",
+      title: "Agencies & Partners",
+      subtitle: "White-label design & overflow support",
+      icon: "🤝",
+      recommended: ["Vector Redraw", "Web Development", "Bulk Design Support"],
+      link: "services.html"
+    },
+    {
+      id: "help-localbiz",
+      title: "Local Businesses",
+      subtitle: "Jamirdia, Bhaluka & Mymensingh hub",
+      icon: "📍",
+      recommended: ["Color Printing", "Local SEO", "Courier Parcel Dispatch"],
+      link: "contact.html"
+    }
+  ],
+
+  // 4 In-Depth Case Studies
+  caseStudies: [
+    {
+      id: "cs-1",
+      title: "Clothing Brand 'Aura Threads' — Brand Identity & Social Kit",
+      category: "Branding & Social",
+      clientType: "E-Commerce Startup",
+      problem: "A new fashion label had zero cohesive visual identity, using inconsistent colors and low-res graphics that failed to convert visitors on Instagram.",
+      solution: "RI Creative Agency designed a minimalist luxury logo mark, formulated an earthy pastel brand color palette, designed 25 Instagram post/story templates, and created print-ready packaging tags.",
+      process: "01 Discovery & Moodboard (Day 1) → 02 Vector Logo Concepts (Day 2) → 03 Social Kit & Packaging (Days 3-4) → 04 Master Asset Delivery (Day 5).",
+      result: "Professional brand launch within 5 days, doubling engagement on social ads and creating a luxury identity ready for physical clothing tags.",
+      deliverables: ["Vector Logo (.AI, .SVG, .PNG)", "Social Media Kit (25 Templates)", "Clothing Tag Dieline", "Brand Guidelines PDF"],
+      image: "assets/images/creative_design_showcase.jpg",
+      whatsappMsg: "Hello RI Creative Agency, I saw your Aura Threads Branding Case Study and want a similar solution."
+    },
+    {
+      id: "cs-2",
+      title: "International Author — Amazon KDP 3-Book Journal Series",
+      category: "Amazon KDP Publishing",
+      clientType: "Self-Publishing Author",
+      problem: "The author had written guided wellness prompts but faced continuous Amazon KDP margin/bleed rejections and had no commercial cover designs.",
+      solution: "We engineered precision 300 DPI PDF interiors adhering strictly to Amazon KDP bleed requirements, calculated exact spine thickness for 120-page cream paper, designed 3 high-impact matte covers, and performed 7-box keyword research.",
+      process: "01 Manuscript Audit & Trim Sizing → 02 Interior Grid & Typography Layout → 03 Cover Wraps & Barcode Calculation → 04 Successful Amazon KDP Approval.",
+      result: "100% first-pass Amazon KDP approval on paperback and Kindle, with automated global royalties enabled worldwide.",
+      deliverables: ["Print-Ready Bleed PDF", "Matte Cover Wrap PDFs", "Kindle eBook Formatting", "7-Box Keyword SEO List"],
+      image: "assets/images/amazon_kdp_showcase.jpg",
+      whatsappMsg: "Hello RI Creative Agency, I want to publish a book series on Amazon KDP like your Case Study."
+    },
+    {
+      id: "cs-3",
+      title: "Agro Enterprise — High-Speed Web Portal & Local SEO",
+      category: "Website & SEO",
+      clientType: "Local Enterprise (Mymensingh)",
+      problem: "An established agricultural business in Bhaluka lacked an online presence, causing corporate buyers to doubt legitimacy and lose inquiries to regional competitors.",
+      solution: "We built a ultra-fast, mobile-first agency-grade corporate website with dual English/Bengali capability, interactive quote request systems, Google Search Console indexing, and local Jamirdia/Bhaluka schema markup.",
+      process: "01 Content Architecture & Wireframes → 02 Vanilla Responsive UI/UX → 03 Local SEO & Speed Tuning (98/100 Core Web Vitals) → 04 Launch & Google Submission.",
+      result: "Ranked #1 for local business queries in Bhaluka within 3 weeks, generating 40+ verified WhatsApp inquiries in the first month.",
+      deliverables: ["Responsive Web Portal", "Fast Performance Code", "Local Schema Markup", "Google Analytics 4 Setup"],
+      image: "assets/images/portfolio_mockup.jpg",
+      whatsappMsg: "Hello RI Creative Agency, I need a corporate website like your Agro Enterprise Case Study."
+    },
+    {
+      id: "cs-4",
+      title: "Mid-Level Professional — Executive ATS Resume & LinkedIn Makeover",
+      category: "Career Branding",
+      clientType: "Senior Job Seeker",
+      problem: "A candidate with 7 years of engineering experience was receiving automated rejections due to an outdated, multi-column graphically heavy CV that crashed ATS scanners.",
+      solution: "We completely restructured the resume into a single-column, ATS-parsed semantic layout with keyword-rich achievement bullet points, paired with a custom cover letter and executive LinkedIn headline/banner.",
+      process: "01 Career History Audit → 02 Target Job Description Keyword Silo → 03 Clean ATS Typography Layout → 04 LinkedIn Profile Optimization.",
+      result: "Secured 3 tier-1 multinational corporate interviews within 14 days of circulating the updated ATS CV.",
+      deliverables: ["ATS-Compatible PDF & DOCX", "Targeted Cover Letter", "LinkedIn Profile Headline & Bio", "Custom LinkedIn Banner"],
+      image: "assets/images/founder.jpg",
+      whatsappMsg: "Hello RI Creative Agency, I want to overhaul my CV and LinkedIn like your Career Case Study."
+    }
+  ],
+
+  // Visual Before & After Comparison Showcases
+  beforeAfter: [
+    {
+      id: "ba-logo",
+      title: "Logo & Brand Mark Transformation",
+      category: "Graphic Design",
+      beforeLabel: "Outdated Low-Res Sketch",
+      beforeDesc: "Pixelated, unaligned raster graphic that lost clarity when resized and failed on dark backgrounds.",
+      afterLabel: "Modern Scalable Vector Mark",
+      afterDesc: "Precision geometric vector icon with calibrated brand colors, versatile horizontal & stacked lockups.",
+      improvements: [
+        "100% Infinite Vector Scalability (.AI, .SVG)",
+        "Works seamlessly in monochrome, light and dark themes",
+        "Exported in CMYK 300 DPI for physical printing and RGB for web",
+        "Includes complete corporate color palette & typography pairings"
+      ]
+    },
+    {
+      id: "ba-photo",
+      title: "Embassy Passport & Studio Photo Retouching",
+      category: "Photo Studio",
+      beforeLabel: "Dim Ambient Smartphone Shot",
+      beforeDesc: "Uneven lighting, cluttered home background, and incorrect aspect ratio rejected by embassy portals.",
+      afterLabel: "Calibrated Official Studio Portrait",
+      afterDesc: "Pixel-perfect hair edge mask, studio white/blue backdrop, balanced exposure, and 300 DPI dimensions.",
+      improvements: [
+        "Guaranteed compliant with US, UK, Schengen & BD passport standards",
+        "Clean hair and edge background extraction without blur or halo",
+        "Natural skin tone correction preserving authentic facial details",
+        "High-density photo paper print-ready 4R / 6R lab sheet layouts"
+      ]
+    },
+    {
+      id: "ba-resume",
+      title: "ATS-Friendly Executive Resume Overhaul",
+      category: "Career Services",
+      beforeLabel: "Heavy Table-Based Multi-Page CV",
+      beforeDesc: "Complex columns and graphical skill bars unreadable by automated Applicant Tracking Systems (ATS).",
+      afterLabel: "Clean Semantic Job-Winning ATS CV",
+      afterDesc: "Single-column hierarchy, quantifiable metrics, high-intent keywords, and flawless ATS parsing.",
+      improvements: [
+        "Passes major ATS algorithms (Workday, Greenhouse, Taleo)",
+        "Action-verb bullet points demonstrating measurable business impact",
+        "Delivered in both editable DOCX and locked print-ready PDF",
+        "Includes matching tailored cover letter structure"
+      ]
+    },
+    {
+      id: "ba-website",
+      title: "Business Web Architecture & UI Redesign",
+      category: "Website & SEO",
+      beforeLabel: "Slow, Non-Responsive Static Page",
+      beforeDesc: "Cluttered fonts, broken mobile navigation, zero metadata, and 5+ second load times.",
+      afterLabel: "High-Speed Conversion Agency Portal",
+      afterDesc: "Subtle 3D depth, instant mobile response, WhatsApp conversion buttons, and 98+ Core Web Vitals.",
+      improvements: [
+        "Sub-second load times on mobile 4G networks",
+        "Dual-language English & authentic Bengali toggle",
+        "Integrated interactive quote request and live project tracking",
+        "Semantic schema markup for top Google search visibility"
+      ]
+    }
+  ],
+
+  // 7 Free Downloadable Checklists / Lead Magnets
+  freeResources: [
+    {
+      id: "res-cv",
+      title: "The Ultimate ATS Resume Checklist",
+      subtitle: "20 Must-Check Rules to Beat the ATS Filter",
+      category: "Career",
+      icon: "📄",
+      pages: "3 Pages",
+      downloads: "1,240+ Downloads",
+      description: "Everything you must review before submitting your CV to international recruiters or corporate portals.",
+      keyPoints: [
+        "File naming convention rules (avoid 'resume_final_v2.pdf')",
+        "Safe fonts that ATS algorithms parse reliably",
+        "How to avoid table and column parsing errors",
+        "Action verbs and measurable outcome formulas"
+      ]
+    },
+    {
+      id: "res-logo",
+      title: "Logo Design & Vector Preparation Checklist",
+      subtitle: "What Every Business Needs in a Logo Package",
+      category: "Design",
+      icon: "🎨",
+      pages: "2 Pages",
+      downloads: "890+ Downloads",
+      description: "The complete checklist of formats, color profiles, and file types your designer must provide.",
+      keyPoints: [
+        "Difference between RGB (Web) and CMYK (Print)",
+        "Why you must own the editable vector (.AI or .SVG) source file",
+        "Transparent PNG resolutions for apparel, stamps, and watermarks",
+        "Minimum sizing rules for mobile app favicons"
+      ]
+    },
+    {
+      id: "res-kdp",
+      title: "Amazon KDP Self-Publishing Checklist",
+      subtitle: "Zero-Error Guide for Paperback & Kindle Uploads",
+      category: "Publishing",
+      icon: "📚",
+      pages: "4 Pages",
+      downloads: "1,530+ Downloads",
+      description: "Step-by-step checklist to avoid Amazon KDP manuscript rejections and rank in profitable niches.",
+      keyPoints: [
+        "Calculating bleed margins and spine width by page count",
+        "Choosing between Cream vs. White paper stock",
+        "Optimizing the 7 KDP backend keyword slots",
+        "Setting up KDP Select and international royalties"
+      ]
+    },
+    {
+      id: "res-branding",
+      title: "Complete Brand Identity Essentials Checklist",
+      subtitle: "Building a Cohesive Business Persona",
+      category: "Branding",
+      icon: "✨",
+      pages: "3 Pages",
+      downloads: "740+ Downloads",
+      description: "The 10 essential assets your brand needs to look established and trustworthy.",
+      keyPoints: [
+        "Primary vs. Secondary logo lockups",
+        "Color codes: Hex, RGB, CMYK, and Pantone",
+        "Brand tone of voice and slogan guidelines",
+        "Social media avatar and banner dimensions"
+      ]
+    },
+    {
+      id: "res-social",
+      title: "Social Media Growth & Ad Creative Checklist",
+      subtitle: "High-CTR Visuals for 15+ Platforms",
+      category: "Marketing",
+      icon: "📱",
+      pages: "3 Pages",
+      downloads: "1,120+ Downloads",
+      description: "Checklist for creating social graphics that stop scrolling thumbs and drive clicks.",
+      keyPoints: [
+        "Safe zone margins for Instagram Reels and TikTok text",
+        "High-CTR thumbnail contrast and face-emotion guidelines",
+        "Hashtag research clusters: niche vs. broad reach",
+        "Call-to-action placement on carousel slides"
+      ]
+    },
+    {
+      id: "res-website",
+      title: "Modern Business Website Launch Checklist",
+      subtitle: "Pre-Launch Speed, Security & SEO Audit",
+      category: "Web Development",
+      icon: "⚡",
+      pages: "4 Pages",
+      downloads: "960+ Downloads",
+      description: "Every technical and visual check required before your website goes live to the public.",
+      keyPoints: [
+        "Mobile viewport responsive testing across 320px to 1920px",
+        "Google Search Console, XML Sitemap, and Robots.txt verification",
+        "Clickable WhatsApp and phone call link verification",
+        "Core Web Vitals loading speed and image compression"
+      ]
+    },
+    {
+      id: "res-startup",
+      title: "Digital Business Startup Checklist",
+      subtitle: "From Concept to First Paying Client",
+      category: "Business",
+      icon: "🚀",
+      pages: "5 Pages",
+      downloads: "1,410+ Downloads",
+      description: "Practical roadmap for entrepreneurs launching digital services, e-commerce, or freelance businesses.",
+      keyPoints: [
+        "Selecting the right freelance marketplace or e-commerce engine",
+        "Local registration and official business contact setup",
+        "Payment receiving options (bKash, Nagad, Bank, International)",
+        "Client onboarding and project management workflow"
+      ]
+    }
+  ],
+
+  // 5 Special Editable Promotional Offers
+  specialOffers: [
+    {
+      id: "offer-new-client",
+      title: "New Client Welcome Offer",
+      tag: "First Project Special",
+      discount: "15% OFF",
+      description: "Get 15% off your first graphic design, CV writing, or social media project with RI Creative Agency.",
+      badge: "New Clients",
+      ctaText: "Claim 15% Welcome Offer",
+      whatsappMsg: "Hello RI Creative Agency, I would like to claim the 15% New Client Welcome Offer."
+    },
+    {
+      id: "offer-starter-biz",
+      title: "Business Starter Package",
+      tag: "All-in-One Essentials",
+      discount: "Save ৳2,000",
+      description: "Custom Vector Logo + Luxury Double-Sided Business Card + Facebook & WhatsApp Business Header + Stationery Pack.",
+      badge: "High Value Bundle",
+      ctaText: "Get Starter Business Bundle",
+      whatsappMsg: "Hello RI Creative Agency, I want to order the Business Starter Package."
+    },
+    {
+      id: "offer-branding-bundle",
+      title: "Complete Branding Bundle",
+      tag: "Full Agency Identity",
+      discount: "Save ৳4,500",
+      description: "Primary & Stacked Logo + Full Brand Guidelines + Letterhead + Envelope + Social Media Post Kit (15 Designs) + Favicons.",
+      badge: "Complete Identity",
+      ctaText: "Order Branding Bundle",
+      whatsappMsg: "Hello RI Creative Agency, I want to book the Complete Branding Bundle."
+    },
+    {
+      id: "offer-social-pack",
+      title: "Social Media Starter Pack",
+      tag: "Multi-Platform Growth",
+      discount: "Save ৳1,500",
+      description: "15 Custom Branded Posts/Carousels + 3 Channel Banners + Niche Hashtag Research + 30-Day Content Calendar.",
+      badge: "Best for Creators",
+      ctaText: "Get Social Media Pack",
+      whatsappMsg: "Hello RI Creative Agency, I want to order the Social Media Starter Pack."
+    },
+    {
+      id: "offer-kdp-author",
+      title: "Amazon KDP Author Starter Package",
+      tag: "Global Publishing Ready",
+      discount: "Save ৳2,500",
+      description: "Complete Paperback & Kindle Manuscript Interior Formatting + High-CTR Cover Wrap + Barcode Calculation + 7-Box Keyword Research.",
+      badge: "Guaranteed KDP Approval",
+      ctaText: "Publish With Author Package",
+      whatsappMsg: "Hello RI Creative Agency, I want to order the Amazon KDP Author Starter Package."
+    }
+  ],
+
+  // Visual 11-Stage Order Tracking Workflow
+  orderTrackingStages: [
+    { step: 1, key: "order_received", title: "Order Received", desc: "Project initiated & recorded in agency system", icon: "📥" },
+    { step: 2, key: "requirements_received", title: "Requirements Received", desc: "Project brief, assets, and specs collected", icon: "📋" },
+    { step: 3, key: "requirements_checked", title: "Requirements Checked", desc: "Lead specialist audited specs & verified scope", icon: "🔍" },
+    { step: 4, key: "work_started", title: "Work Started", desc: "Crafting concepts and initiating production", icon: "🚀" },
+    { step: 5, key: "designing_development", title: "Designing / Development", desc: "Core creative execution & coding in progress", icon: "🎨" },
+    { step: 6, key: "first_draft", title: "First Draft Ready", desc: "Initial deliverables rendered for review", icon: "✨" },
+    { step: 7, key: "client_review", title: "Client Review", desc: "Draft shared with client for evaluation", icon: "👁️" },
+    { step: 8, key: "revision", title: "Revision", desc: "Incorporating client modifications & refinements", icon: "🔄" },
+    { step: 9, key: "approved", title: "Approved", desc: "Final designs & code approved by client", icon: "👍" },
+    { step: 10, key: "final_delivery", title: "Final Delivery", desc: "Master source files & print files packaged", icon: "📦" },
+    { step: 11, key: "completed", title: "Completed", desc: "Project completed & post-launch support active", icon: "🏆" }
+  ],
+
+  // Preset Sample Orders for Live Tracking & Dashboard Testing
+  sampleOrders: [
+    {
+      orderId: "RI-1001",
+      clientName: "Tanvir Ahmed",
+      clientEmail: "tanvir.client@gmail.com",
+      serviceName: "Logo Design & Brand Identity",
+      serviceCategory: "Creative Design",
+      package: "STANDARD ⭐",
+      progress: 75,
+      currentStageIndex: 6, // Client Review
+      statusText: "Client Review (Draft Ready)",
+      assignedTo: "Rafiqul Islam (Lead Designer)",
+      startDate: "2026-09-06",
+      estimatedDelivery: "2026-09-12",
+      price: "৳4,500",
+      paymentStatus: "Paid",
+      deliverablesList: [
+        { name: "Draft_Concepts_v1.pdf", type: "PDF", size: "3.4 MB", url: "#" },
+        { name: "Logo_Mockup_Preview.png", type: "PNG", size: "2.1 MB", url: "#" }
+      ],
+      history: [
+        { stage: "Order Received", date: "2026-09-06 10:15 AM", note: "Order placed via project onboarding wizard." },
+        { stage: "Requirements Checked", date: "2026-09-06 02:30 PM", note: "Brief reviewed by Rafiqul Islam. Industry: FinTech." },
+        { stage: "Work Started", date: "2026-09-07 09:00 AM", note: "Vector drafting initiated." },
+        { stage: "First Draft Ready", date: "2026-09-09 04:00 PM", note: "3 distinct vector concepts prepared." },
+        { stage: "Client Review", date: "2026-09-10 08:30 AM", note: "Draft uploaded to portal. Awaiting client feedback." }
+      ]
+    },
+    {
+      orderId: "RI-1002",
+      clientName: "Shahidul Karim",
+      clientEmail: "shahidul.author@gmail.com",
+      serviceName: "Amazon KDP Book Formatting & Cover Wrap",
+      serviceCategory: "Amazon KDP",
+      package: "STANDARD ⭐",
+      progress: 100,
+      currentStageIndex: 10, // Completed
+      statusText: "Completed & Delivered",
+      assignedTo: "Rafiqul Islam (KDP Specialist)",
+      startDate: "2026-09-01",
+      estimatedDelivery: "2026-09-06",
+      price: "৳3,500",
+      paymentStatus: "Paid",
+      deliverablesList: [
+        { name: "Final_Interior_Bleed_Ready.pdf", type: "PDF", size: "12.8 MB", url: "#" },
+        { name: "Full_Matte_Cover_Wrap.pdf", type: "PDF", size: "8.2 MB", url: "#" },
+        { name: "Amazon_Keywords_Metadata.docx", type: "DOCX", size: "45 KB", url: "#" },
+        { name: "All_Assets_Package.zip", type: "ZIP", size: "21.4 MB", url: "#" }
+      ],
+      history: [
+        { stage: "Order Received", date: "2026-09-01 11:00 AM", note: "Order initiated for 120-page journal." },
+        { stage: "Designing / Development", date: "2026-09-02 10:00 AM", note: "Bleed calculation and margin alignment completed." },
+        { stage: "First Draft Ready", date: "2026-09-04 03:00 PM", note: "Cover wrap proof sent." },
+        { stage: "Approved", date: "2026-09-05 01:00 PM", note: "Client approved proof." },
+        { stage: "Completed", date: "2026-09-06 05:00 PM", note: "Final files delivered. KDP approval successful." }
+      ]
+    },
+    {
+      orderId: "RI-1003",
+      clientName: "Farhana Yasmin",
+      clientEmail: "farhana.agro@gmail.com",
+      serviceName: "Corporate Agency Website & Local SEO",
+      serviceCategory: "Website & SEO",
+      package: "PREMIUM",
+      progress: 45,
+      currentStageIndex: 4, // Designing / Development
+      statusText: "Designing & Code Development",
+      assignedTo: "Rafiqul Islam (Full-Stack)",
+      startDate: "2026-09-08",
+      estimatedDelivery: "2026-09-15",
+      price: "৳15,000",
+      paymentStatus: "Partially Paid (50% Advance)",
+      deliverablesList: [
+        { name: "UI_Wireframe_Architecture.pdf", type: "PDF", size: "1.8 MB", url: "#" }
+      ],
+      history: [
+        { stage: "Order Received", date: "2026-09-08 09:30 AM", note: "Scope: 5-page corporate site + Local SEO." },
+        { stage: "Requirements Checked", date: "2026-09-08 03:00 PM", note: "Domain & branding materials collected." },
+        { stage: "Work Started", date: "2026-09-09 10:00 AM", note: "HTML5/CSS3 coding structure underway." },
+        { stage: "Designing / Development", date: "2026-09-10 09:00 AM", note: "Responsive layout & color system being assembled." }
+      ]
+    }
+  ],
+
+  // Cross-Sell Recommendations ("You May Also Need")
+  crossSells: {
+    "creative-design": [
+      { name: "Business Card & Stationery", link: "creative-design.html#stationery", desc: "Matching double-sided cards" },
+      { name: "Social Media Kit", link: "social-media.html", desc: "Profile banners & avatars" },
+      { name: "Modern Website", link: "website-seo.html", desc: "Turn design into an online hub" },
+      { name: "Brand Guidelines PDF", link: "creative-design.html#branding", desc: "Color codes and font rules" }
+    ],
+    "website-seo": [
+      { name: "Technical SEO Audit", link: "website-seo.html#seo", desc: "Google 1st page optimization" },
+      { name: "Brand Identity Design", link: "creative-design.html", desc: "Professional logo for your site" },
+      { name: "Social Media Marketing", link: "social-media.html", desc: "Drive traffic to your new site" },
+      { name: "Passive Income Setup", link: "passive-income.html", desc: "Monetize your site traffic" }
+    ],
+    "career-services": [
+      { name: "Targeted Cover Letter", link: "career-services.html#letter", desc: "Pair with your new CV" },
+      { name: "LinkedIn Profile Makeover", link: "career-services.html#linkedin", desc: "Attract global recruiters" },
+      { name: "Online Job Application", link: "job-applications.html", desc: "Assistance submitting forms" },
+      { name: "Professional Headshot", link: "print-photo.html#photo", desc: "Embassy & profile photo" }
+    ],
+    "amazon-kdp": [
+      { name: "Full Paperback Cover Wrap", link: "amazon-kdp.html#cover", desc: "300 DPI spine calculated wrap" },
+      { name: "7-Box Keyword Research", link: "amazon-kdp.html#keywords", desc: "High-demand, low-competition tags" },
+      { name: "Author Website Hub", link: "website-seo.html", desc: "Showcase all published titles" },
+      { name: "Social Media Book Promo", link: "social-media.html", desc: "3D book mockups for Instagram" }
+    ]
+  },
+
+  // Expanded FAQs (Including all 11 required questions from Point 29)
   faqs: [
     {
-      q: "What services does RI Creative Agency provide?",
-      a: "RI Creative Agency provides a broad digital ecosystem covering 13 major service categories: Social Media Services, Active Marketplace Optimization (Fiverr, Upwork), E-Commerce Store Setup, Passive Income Digital Assets, Amazon KDP Publishing, Graphic & Brand Design, Website Design & Development, SEO & Digital Marketing, Professional Career & CV Services, Photo Studio & Print Solutions, Online Job Application Guidance, Courier Logistics Support, and 1-on-1 Practical Consultation."
+      q: "How do I place an order?",
+      a: "Placing an order is simple and transparent. You can click 'Start Your Project' on any page to open our 6-step project onboarding wizard, choose your service and package, submit your details, and receive an instant Order ID (e.g. RI-1001). You can also click 'Chat on WhatsApp' to discuss your project directly with Rafiqul Islam."
+    },
+    {
+      q: "How do I get a quote?",
+      a: "Click 'Get Free Quote' from the navigation or hero section. Fill out the quick quote request form detailing your service, budget, and timeline. You will instantly receive a Quote Reference ID, and our team will review and confirm your customized quote within a few hours."
+    },
+    {
+      q: "How do I submit requirements?",
+      a: "You can submit requirements directly through our 'Start Your Project' wizard by typing your instructions and attaching files (images, documents, sketches, ZIP files). You can also share your brief and assets directly via WhatsApp (01310-824987) or email (rafiqulislam.globalwork@gmail.com)."
+    },
+    {
+      q: "How long does a project take?",
+      a: "Turnaround times vary by scope and package: Basic services (single logos, photo editing, CVs) typically take 24 to 48 hours. Standard projects (Amazon KDP, multi-asset branding, social kits) take 2 to 4 days. Comprehensive websites and full brand identity systems typically take 5 to 7 days."
+    },
+    {
+      q: "How many revisions are included?",
+      a: "Revisions depend on your selected package tier: Our Basic package includes 2 revision rounds. Our Standard package includes 5 comprehensive revisions. Our Premium package comes with Unlimited Revisions until you are 100% satisfied with the outcome."
+    },
+    {
+      q: "Can I request a custom package?",
+      a: "Yes! Every business has unique needs. If our Basic, Standard, or Premium packages do not perfectly match your requirements, select 'Custom Package' or contact us directly on WhatsApp. We regularly combine services (e.g. Logo + Website + Social Media Kit) into cost-effective customized packages."
+    },
+    {
+      q: "Can I contact you through WhatsApp?",
+      a: "Yes! WhatsApp is our fastest and primary communication channel. You can message founder Rafiqul Islam directly at 01310-824987 (internationally +8801310824987) at any time. Every service page includes dynamic buttons that prefill your WhatsApp message with your exact service interest."
     },
     {
       q: "Do you work with international clients?",
-      a: "Yes! While our agency is headquartered in Jamirdia, Bhaluka, Mymensingh, Bangladesh, we work with individual creators, entrepreneurs, and businesses worldwide. All digital deliverables (designs, websites, KDP files, SEO audits) are seamlessly shared and supported via online channels."
+      a: "Yes, absolutely! While RI Creative Agency is physically based in Jamirdia, Bhaluka, Mymensingh, Bangladesh, we actively serve clients worldwide across the USA, UK, Europe, Middle East, and Asia. All deliverables are provided digitally with international payment flexibility."
     },
     {
-      q: "How can I contact RI Creative Agency or Rafiqul Islam?",
-      a: "The fastest and most direct way is via WhatsApp / Mobile at 01310-824987 (internationally +8801310824987), by email at rafiqulislam.globalwork@gmail.com, or by using the interactive contact form on our website."
+      q: "How are final files delivered?",
+      a: "Final files are delivered securely through your Client Dashboard, Google Drive links, and direct email/WhatsApp attachments. We deliver all industry-standard formats including vector source files (AI, SVG, EPS, PSD), print-ready PDFs (300 DPI, CMYK), high-res PNG/JPG, editable Word/DOCX, and clean web code (HTML/CSS/JS) inside organized ZIP archives."
     },
     {
-      q: "How do I request a quotation for my project?",
-      a: "You can click any 'Request a Custom Quote' or 'Start a Project' button on our website. This initiates a direct WhatsApp conversation or contact form submission where you can describe your requirements and budget range."
+      q: "Can I order multiple services?",
+      a: "Yes! You can combine multiple services in a single order (for example: Logo Design + Business Cards + Facebook/YouTube Branding + Website Development). We provide special bundle discounts for multi-service client projects."
     },
     {
-      q: "Do you provide customized packages?",
-      a: "Yes. Every project has unique requirements. We regularly combine services (for example, Logo Design + Website Development + Social Media Branding) into tailored, cost-effective packages."
-    },
-    {
-      q: "Do you provide website design and development?",
-      a: "Yes, we build modern, mobile-first, high-performance websites ranging from clean business portfolios and personal brands to multi-page service directories, blogs, and landing pages with fast loading speeds."
-    },
-    {
-      q: "Do you provide Amazon KDP services?",
-      a: "Yes, we offer comprehensive KDP self-publishing support including profitable niche and keyword research, manuscript formatting (Kindle eBook, Paperback, and Hardcover), interior layout, custom cover design, and step-by-step upload guidance."
-    },
-    {
-      q: "Do you provide marketplace profile and gig services?",
-      a: "Yes, we help clients optimize their profiles and service listings on Fiverr, Upwork, Freelancer, and other platforms using ethical keyword placement, compelling bios, portfolio integration, and tailored proposal writing frameworks."
-    },
-    {
-      q: "Do you provide 1-on-1 training and consultation?",
-      a: "Yes, founder Rafiqul Islam provides practical, hands-on mentorship across graphic design, freelancing, Amazon KDP, digital marketing, and web design fundamentals via interactive screen-sharing or in-person sessions at our office."
-    },
-    {
-      q: "How does the project process work from start to finish?",
-      a: "Our structured 5-step workflow includes: 01. Contact & Initial Inquiry, 02. Goal Consultation & Recommendation, 03. Planning & Milestone Agreement, 04. Professional Development & Review, and 05. Delivery, Implementation & Ongoing Support."
-    },
-    {
-      q: "Do you guarantee income, sales, or #1 rankings?",
-      a: "No. RI Creative Agency adheres strictly to honest business principles. No legitimate agency can guarantee sales, financial earnings, marketplace orders, or search engine rankings. Results depend on consumer demand, your dedication, continuous marketing, and platform policies. We guarantee technical excellence, professional aesthetics, and dedicated support."
+      q: "Can I track my project?",
+      a: "Yes! We feature a dedicated Visual Order Tracking system. Simply visit 'Track Order' from the menu or dashboard, enter your Order ID (e.g. RI-1001), and view your real-time 11-stage progress bar (from Order Received to Final Delivery), milestone notes, and draft previews."
     }
   ]
 };

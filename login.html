@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client &amp; Admin Sign In — Workspace Portal | RI Creative Agency</title>
+  <meta name="description" content="Sign in to your RI Creative Agency client workspace. View active project sprints, track orders, request revisions, and download assets.">
+  <link rel="canonical" href="http://www.ricreativeagency.com/login.html">
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+  <!-- Dual-Tier Header -->
+  <div class="header-wrapper" id="header-wrapper">
+    <div class="top-utility-bar">
+      <div class="container utility-inner">
+        <div class="utility-left">
+          <div class="utility-status">
+            <span class="pulse-dot"></span>
+            <span>Secure Client Portal</span>
+          </div>
+          <span class="utility-sep d-desktop-only">•</span>
+          <div class="utility-location d-desktop-only">
+            <span>Jamirdia, Bhaluka, Mymensingh</span>
+          </div>
+        </div>
+
+        <div class="utility-right">
+          <div class="header-clock-widget" id="header-clock-widget">
+            <span class="clock-zone-badge">BST (GMT+6)</span>
+            <span class="clock-time" id="live-clock-time">10:05:00 AM</span>
+          </div>
+          <span class="utility-sep d-desktop-only">•</span>
+          <a href="tel:+8801310824987" class="utility-link d-desktop-only">
+            <span>01310-824987</span>
+          </a>
+          <span class="utility-sep">•</span>
+          <div class="lang-switch-wrap">
+            <button class="lang-switch-btn" id="lang-toggle-btn" aria-label="Toggle Language">
+              <span class="lang-pill active" data-lang-val="en">EN</span>
+              <span class="lang-pill" data-lang-val="bn">বাংলা</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Header -->
+    <header class="site-header" id="site-header">
+      <div class="container header-inner">
+        <a href="index.html" class="brand-logo" aria-label="RI Creative Agency Home">
+          <div class="logo-badge"><span class="logo-initials">RI</span></div>
+          <div class="brand-text-wrap">
+            <span class="brand-name">RI CREATIVE<span class="brand-accent">.</span></span>
+            <span class="brand-tagline">DIGITAL AGENCY</span>
+          </div>
+        </a>
+
+        <nav class="nav-menu" id="primary-nav-menu" aria-label="Primary Navigation">
+          <a href="index.html" class="nav-link"><span>Home</span></a>
+          <a href="services.html" class="nav-link"><span>Services</span></a>
+          <a href="track-order.html" class="nav-link"><span>Track Order</span></a>
+          <a href="dashboard.html" class="nav-link"><span>Dashboard</span></a>
+          <a href="contact.html" class="nav-link"><span>Contact</span></a>
+        </nav>
+
+        <div class="header-actions">
+          <button class="theme-toggle" id="theme-toggle-btn" aria-label="Toggle Dark Mode">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+          <a href="start-project.html" class="btn btn-primary header-cta-btn" style="padding: 0.55rem 1.1rem; font-size: 0.85rem;">
+            <span>Start Project</span>
+          </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <main class="page-main section-padding" style="background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%); min-height: 70vh; display: flex; align-items: center;">
+    <div class="container">
+      <div style="max-width: 440px; margin: 0 auto; background: var(--bg-surface); border: 1px solid var(--border-card); border-radius: var(--radius-lg); padding: 2.5rem; box-shadow: var(--shadow-xl);">
+        <div style="text-align: center; margin-bottom: 2rem;">
+          <div style="width: 54px; height: 54px; border-radius: 50%; background: var(--accent-badge-bg); color: var(--brand-primary); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin: 0 auto 1rem;">
+            🔐
+          </div>
+          <h1 style="font-size: 1.5rem; font-weight: 900; color: var(--text-primary); margin-bottom: 0.35rem;">
+            Sign In to Workspace
+          </h1>
+          <p style="font-size: 0.88rem; color: var(--text-secondary); margin: 0;">
+            Track your design sprints, download files, and request revisions.
+          </p>
+        </div>
+
+        <form id="client-login-form" style="display: flex; flex-direction: column; gap: 1.25rem;">
+          <div class="input-group-custom">
+            <label>Work Email or WhatsApp Number *</label>
+            <input type="text" id="login-identifier" class="input-custom" placeholder="name@company.com or 01712..." required>
+          </div>
+
+          <div class="input-group-custom">
+            <label>Password / Client Access Key *</label>
+            <input type="password" id="login-password" class="input-custom" placeholder="••••••••" required>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block" style="padding: 0.85rem; font-weight: 800;">
+            Sign In to Portal →
+          </button>
+
+          <div style="text-align: center; margin-top: 0.5rem; font-size: 0.85rem;">
+            <a href="dashboard.html" style="color: var(--brand-primary); font-weight: 700; text-decoration: underline;">
+              Enter Demo Client Portal Without Password →
+            </a>
+          </div>
+
+          <div style="text-align: center; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--border-subtle); font-size: 0.82rem; color: var(--text-muted);">
+            Are you the Agency Owner? <a href="admin.html" style="color: var(--text-primary); font-weight: 700;">Open Operations Admin</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-bottom">
+        <div>© <span class="current-year">2026</span> RI Creative Agency. All Rights Reserved. Founded by Rafiqul Islam.</div>
+        <div style="display: flex; gap: 1.25rem;">
+          <a href="track-order.html">Track Order</a>
+          <a href="dashboard.html">Client Portal</a>
+          <a href="admin.html">Admin</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/site-data.js"></script>
+  <script src="js/api-service.js"></script>
+  <script src="js/search-filter.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    document.getElementById("client-login-form")?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const id = document.getElementById("login-identifier")?.value.trim();
+      const pw = document.getElementById("login-password")?.value.trim();
+
+      if (id.toLowerCase().includes("admin") || pw === "admin123") {
+        window.location.href = "admin.html";
+      } else {
+        if (window.showToast) window.showToast("Signed in successfully!", "✓");
+        setTimeout(() => { window.location.href = "dashboard.html"; }, 500);
+      }
+    });
+  </script>
+</body>
+</html>

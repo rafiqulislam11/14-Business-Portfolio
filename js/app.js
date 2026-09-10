@@ -17,6 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initHeroCarousel();
   updateCurrentYear();
   initClickChomokEffect();
+  initAuthAndSupportSystem();
+  initClientConversionFeatures();
 });
 
 /**
@@ -856,6 +858,13 @@ function initFloatingQuickDock() {
   quickDock.id = "floating-quick-dock";
 
   quickDock.innerHTML = `
+    <button class="quick-dock-support" id="quick-dock-support-btn" aria-label="Open 24/7 Support Desk" title="24/7 Support Desk / হেল্প ও সাপোর্ট">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+        <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+      </svg>
+      <span data-en="Support" data-bn="সাপোর্ট">${currentLang === "bn" ? "সাপোর্ট" : "Support"}</span>
+    </button>
     <a href="https://wa.me/8801310824987?text=Hello%20RI%20Creative%20Agency,%20I%20would%20like%20to%20consult%20about%20a%20project." target="_blank" rel="noopener noreferrer" class="quick-dock-cta" aria-label="Direct WhatsApp Consultation" title="WhatsApp Direct Chat">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.311.045-.698.058-2.221-.572-1.747-.723-2.87-2.502-2.957-2.617-.087-.116-.708-.941-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.173.086.275.072.376-.044.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.043.073.043.419-.101.824z"/></svg>
       <span data-en="Chat with Us" data-bn="হোয়াটসঅ্যাপে কথা বলুন">${currentLang === "bn" ? "হোয়াটসঅ্যাপে কথা বলুন" : "Chat with Us"}</span>
@@ -871,6 +880,15 @@ function initFloatingQuickDock() {
   document.body.appendChild(quickDock);
 
   const backToTopBtn = document.getElementById("back-to-top-btn");
+  const supportBtn = document.getElementById("quick-dock-support-btn");
+
+  if (supportBtn) {
+    supportBtn.addEventListener("click", () => {
+      if (window.openSupportModal) {
+        window.openSupportModal();
+      }
+    });
+  }
 
   const toggleScrollBtn = () => {
     if (window.scrollY > 280) {
@@ -1189,4 +1207,1758 @@ function initClickChomokEffect() {
   // Expose trigger globally for programmatic use
   window.triggerChomok = createChomokBurst;
 }
+
+/**
+ * 14. Authentication & Client Support Desk System
+ * - Login / Logout buttons with local session persistence
+ * - Client & Admin Demo Accounts (Rafiqul Islam / Tanvir Ahmed)
+ * - 24/7 Help Desk & Support Ticket Management (Submit, View status, WhatsApp direct route)
+ * - Client Project Deliverables & Orders Portal
+ */
+function initAuthAndSupportSystem() {
+  const currentLang = localStorage.getItem("ri_agency_lang") || "en";
+
+  // Pre-seed default demo tickets if empty
+  if (!localStorage.getItem("ri_support_tickets")) {
+    const defaultTickets = [
+      {
+        id: "RI-TICKET-8291",
+        name: "Tanvir Ahmed",
+        email: "tanvir.client@gmail.com",
+        category: "Website & SEO",
+        priority: "high",
+        subject: "SEO Audit & Speed Optimization for E-commerce Store",
+        message: "We need the technical SEO audit results and Core Web Vitals speed optimization report for our upcoming seasonal launch.",
+        status: "In Review",
+        date: "2026-09-08 04:30 PM",
+        assigned: "Rafiqul Islam (Founder)"
+      }
+    ];
+    localStorage.setItem("ri_support_tickets", JSON.stringify(defaultTickets));
+  }
+
+  // Toast System
+  let toastContainer = document.getElementById("agency-toast-container");
+  if (!toastContainer) {
+    toastContainer = document.createElement("div");
+    toastContainer.id = "agency-toast-container";
+    toastContainer.className = "agency-toast-container";
+    document.body.appendChild(toastContainer);
+  }
+
+  function showToast(message, icon = "✨") {
+    const toast = document.createElement("div");
+    toast.className = "agency-toast";
+    toast.innerHTML = `<span>${icon}</span><span>${message}</span>`;
+    toastContainer.appendChild(toast);
+    setTimeout(() => {
+      toast.style.opacity = "0";
+      toast.style.transform = "translateY(15px) scale(0.95)";
+      toast.style.transition = "all 0.3s ease";
+      setTimeout(() => toast.remove(), 300);
+    }, 3800);
+  }
+
+  window.showAgencyToast = showToast;
+
+  function getCurrentUser() {
+    try {
+      const stored = localStorage.getItem("ri_agency_auth_user");
+      return stored ? JSON.parse(stored) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function loginUser(userData) {
+    localStorage.setItem("ri_agency_auth_user", JSON.stringify(userData));
+    renderAuthElements();
+    closeAuthModal();
+    if (window.triggerChomok) {
+      window.triggerChomok(window.innerWidth / 2, window.innerHeight / 3, true);
+    }
+    const welcomeMsg = currentLang === "bn" 
+      ? `স্বাগতম, ${userData.name}! আপনি সফলভাবে লগইন করেছেন।`
+      : `Welcome back, ${userData.name}! You are now logged in.`;
+    showToast(welcomeMsg, "👋");
+  }
+
+  function logoutUser() {
+    localStorage.removeItem("ri_agency_auth_user");
+    renderAuthElements();
+    const byeMsg = currentLang === "bn" 
+      ? "সফলভাবে লগআউট করা হয়েছে।"
+      : "You have been logged out successfully.";
+    showToast(byeMsg, "👋");
+  }
+
+  function renderAuthElements() {
+    const user = getCurrentUser();
+    const lang = localStorage.getItem("ri_agency_lang") || "en";
+
+    // 1. Desktop Header Action Integration
+    const headerActions = document.querySelector(".header-actions");
+    if (headerActions) {
+      let authContainer = document.getElementById("header-auth-container");
+      if (!authContainer) {
+        authContainer = document.createElement("div");
+        authContainer.id = "header-auth-container";
+        authContainer.className = "auth-nav-container";
+        const themeToggle = headerActions.querySelector(".theme-toggle");
+        if (themeToggle) {
+          headerActions.insertBefore(authContainer, themeToggle);
+        } else {
+          headerActions.prepend(authContainer);
+        }
+      }
+
+      if (!user) {
+        authContainer.innerHTML = `
+          <button class="btn-header-auth" id="header-auth-btn" aria-label="Sign In" title="Log In or Create Account">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span data-en="Login" data-bn="লগইন">${lang === "bn" ? "লগইন" : "Login"}</span>
+          </button>
+        `;
+        document.getElementById("header-auth-btn")?.addEventListener("click", openAuthModal);
+      } else {
+        const firstName = user.name.split(" ")[0];
+        const avatarContent = (user.role === 'admin' || user.avatarImg)
+          ? `<img src="${user.avatarImg || 'assets/images/rafiqul-islam-portrait.jpg'}" alt="${user.name}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: center 20%;">`
+          : (user.avatar || "U");
+
+        authContainer.innerHTML = `
+          <div class="user-profile-menu-wrap" id="user-profile-menu-wrap">
+            <button class="user-profile-btn" id="user-profile-btn" aria-expanded="false" title="Account Menu: ${user.name}">
+              <span class="user-avatar-badge" style="padding: 0; overflow: hidden;">${avatarContent}</span>
+              <span class="user-name-text">${firstName}</span>
+              <span class="user-status-dot online"></span>
+              <svg class="user-caret" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="user-dropdown-card" id="user-dropdown-card">
+              <div class="user-dropdown-header">
+                <div class="user-header-avatar" style="padding: 0; overflow: hidden;">${avatarContent}</div>
+                <div class="user-header-details">
+                  <span class="user-header-name">${user.name}</span>
+                  <span class="user-header-email">${user.email}</span>
+                  <span class="user-header-badge ${user.role === 'admin' ? 'badge-admin' : 'badge-client'}">
+                    ${user.role === 'admin' ? '👑 Founder & Admin' : '💼 Verified Client'}
+                  </span>
+                </div>
+              </div>
+              <div class="user-dropdown-menu">
+                <button class="user-menu-item" id="menu-support-btn">
+                  <span class="menu-item-icon">🎧</span>
+                  <div class="menu-item-text">
+                    <strong data-en="24/7 Support Desk" data-bn="সাপোর্ট হেল্প ডেস্ক">${lang === "bn" ? "সাপোর্ট হেল্প ডেস্ক" : "24/7 Support Desk"}</strong>
+                    <span data-en="Submit or track support tickets" data-bn="টিকেট জমা দিন বা স্ট্যাটাস দেখুন">${lang === "bn" ? "টিকেট জমা দিন বা স্ট্যাটাস দেখুন" : "Submit or track support tickets"}</span>
+                  </div>
+                </button>
+                <button class="user-menu-item" id="menu-portal-btn">
+                  <span class="menu-item-icon">📊</span>
+                  <div class="menu-item-text">
+                    <strong data-en="${user.role === 'admin' ? 'Agency Projects Hub' : 'My Orders & Projects'}" data-bn="${user.role === 'admin' ? 'এজেন্সি প্রজেক্ট হাব' : 'আমার অর্ডার ও প্রজেক্ট'}">${user.role === 'admin' ? (lang === "bn" ? "এজেন্সি প্রজেক্ট হাব" : "Agency Projects Hub") : (lang === "bn" ? "আমার অর্ডার ও প্রজেক্ট" : "My Orders & Projects")}</strong>
+                    <span data-en="Live progress & deliverables" data-bn="কাজের অগ্রগতি ও ডেলিভারি ফাইল">${lang === "bn" ? "কাজের অগ্রগতি ও ডেলিভারি ফাইল" : "Live progress & deliverables"}</span>
+                  </div>
+                </button>
+              </div>
+              <div class="user-dropdown-footer">
+                <button class="user-logout-btn" id="user-logout-btn">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                  <span data-en="Log Out" data-bn="লগআউট">${lang === "bn" ? "লগআউট" : "Log Out"}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+
+        const wrap = document.getElementById("user-profile-menu-wrap");
+        const profileBtn = document.getElementById("user-profile-btn");
+        const logoutBtn = document.getElementById("user-logout-btn");
+        const supportBtn = document.getElementById("menu-support-btn");
+        const portalBtn = document.getElementById("menu-portal-btn");
+
+        profileBtn?.addEventListener("click", (e) => {
+          e.stopPropagation();
+          wrap?.classList.toggle("active");
+        });
+
+        logoutBtn?.addEventListener("click", () => {
+          logoutUser();
+        });
+
+        supportBtn?.addEventListener("click", () => {
+          wrap?.classList.remove("active");
+          openSupportModal();
+        });
+
+        portalBtn?.addEventListener("click", () => {
+          wrap?.classList.remove("active");
+          openProjectPortalModal();
+        });
+      }
+    }
+
+    // 2. Mobile Drawer Integration
+    const drawerBody = document.querySelector(".drawer-body");
+    if (drawerBody) {
+      let drawerAuth = document.getElementById("drawer-auth-box");
+      if (!drawerAuth) {
+        drawerAuth = document.createElement("div");
+        drawerAuth.id = "drawer-auth-box";
+        drawerAuth.style.padding = "1rem 1.25rem";
+        drawerAuth.style.borderTop = "1px solid var(--border-subtle)";
+        drawerAuth.style.marginTop = "1rem";
+        drawerBody.appendChild(drawerAuth);
+      }
+
+      if (!user) {
+        drawerAuth.innerHTML = `
+          <button class="btn btn-primary" id="drawer-auth-btn" style="width: 100%; justify-content: center; gap: 0.5rem;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span data-en="Client Login / Register" data-bn="লগইন / রেজিস্টার">${lang === "bn" ? "লগইন / রেজিস্টার" : "Client Login / Register"}</span>
+          </button>
+        `;
+        document.getElementById("drawer-auth-btn")?.addEventListener("click", () => {
+          document.getElementById("drawer-close-btn")?.click();
+          openAuthModal();
+        });
+      } else {
+        const drawerAvatarContent = (user.role === 'admin' || user.avatarImg)
+          ? `<img src="${user.avatarImg || 'assets/images/rafiqul-islam-portrait.jpg'}" alt="${user.name}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: center 20%;">`
+          : (user.avatar || "U");
+
+        drawerAuth.innerHTML = `
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
+            <div style="display: flex; align-items: center; gap: 0.6rem;">
+              <span class="user-avatar-badge" style="padding: 0; overflow: hidden;">${drawerAvatarContent}</span>
+              <div>
+                <div style="font-weight: 700; font-size: 0.88rem; color: var(--text-primary);">${user.name}</div>
+                <div style="font-size: 0.74rem; color: var(--text-muted);">${user.email}</div>
+              </div>
+            </div>
+            <span class="user-header-badge ${user.role === 'admin' ? 'badge-admin' : 'badge-client'}">${user.role === 'admin' ? 'Admin' : 'Client'}</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.75rem;">
+            <button class="btn btn-secondary btn-sm" id="drawer-support-btn" style="font-size: 0.8rem; justify-content: center;">🎧 Support</button>
+            <button class="btn btn-secondary btn-sm" id="drawer-portal-btn" style="font-size: 0.8rem; justify-content: center;">📊 Projects</button>
+          </div>
+          <button class="user-logout-btn" id="drawer-logout-btn" style="width: 100%;">
+            <span data-en="Log Out" data-bn="লগআউট">${lang === "bn" ? "লগআউট" : "Log Out"}</span>
+          </button>
+        `;
+        document.getElementById("drawer-logout-btn")?.addEventListener("click", logoutUser);
+        document.getElementById("drawer-support-btn")?.addEventListener("click", () => {
+          document.getElementById("drawer-close-btn")?.click();
+          openSupportModal();
+        });
+        document.getElementById("drawer-portal-btn")?.addEventListener("click", () => {
+          document.getElementById("drawer-close-btn")?.click();
+          openProjectPortalModal();
+        });
+      }
+    }
+  }
+
+  // Close dropdown on outside click
+  document.addEventListener("click", (e) => {
+    const wrap = document.getElementById("user-profile-menu-wrap");
+    if (wrap && wrap.classList.contains("active") && !wrap.contains(e.target)) {
+      wrap.classList.remove("active");
+    }
+  });
+
+  // Modal 1: Auth Modal
+  function createAuthModal() {
+    if (document.getElementById("auth-modal-overlay")) return;
+    const modal = document.createElement("div");
+    modal.id = "auth-modal-overlay";
+    modal.className = "agency-modal-overlay";
+    modal.innerHTML = `
+      <div class="agency-modal-card">
+        <div class="agency-modal-header">
+          <div class="agency-modal-title-wrap">
+            <span class="agency-modal-icon">🔐</span>
+            <div>
+              <div class="agency-modal-title" data-en="RI Client &amp; Partner Portal" data-bn="আরআই ক্লায়েন্ট ও পার্টনার পোর্টাল">RI Client &amp; Partner Portal</div>
+              <div class="agency-modal-subtitle" data-en="Access your project dashboard, files &amp; support" data-bn="প্রজেক্ট ড্যাশবোর্ড, ফাইল ও সাপোর্ট অ্যাক্সেস করুন">Access your project dashboard, files &amp; support</div>
+            </div>
+          </div>
+          <button class="agency-modal-close" id="auth-modal-close-btn" aria-label="Close">✕</button>
+        </div>
+        <div class="agency-modal-body">
+          <!-- Auth Tabs -->
+          <div class="auth-tabs-nav">
+            <button class="auth-tab-btn active" id="tab-btn-signin" data-en="Sign In" data-bn="লগইন">Sign In</button>
+            <button class="auth-tab-btn" id="tab-btn-signup" data-en="Create Account" data-bn="নতুন একাউন্ট">Create Account</button>
+          </div>
+
+          <!-- Quick 1-Click Demo Logins -->
+          <div style="margin-bottom: 0.75rem;">
+            <div style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.45rem; text-transform: uppercase; letter-spacing: 0.5px;">
+              ⚡ <span data-en="Instant Demo Logins" data-bn="১-ক্লিক ডেমো লগইন">Instant Demo Logins</span>
+            </div>
+            <div class="auth-demo-grid">
+              <button class="auth-demo-card" id="demo-login-admin" type="button">
+                <span class="auth-demo-badge">👑 Admin Mode</span>
+                <span class="auth-demo-name">Rafiqul Islam</span>
+                <span class="auth-demo-sub">Founder &amp; Owner</span>
+              </button>
+              <button class="auth-demo-card" id="demo-login-client" type="button">
+                <span class="auth-demo-badge" style="color: #059669;">💼 Client Mode</span>
+                <span class="auth-demo-name">Tanvir Ahmed</span>
+                <span class="auth-demo-sub">Active Client</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Sign In Form -->
+          <form id="auth-signin-form">
+            <div class="agency-form-group">
+              <label class="agency-form-label" data-en="Email or Phone" data-bn="ইমেইল বা ফোন">Email or Phone</label>
+              <input type="text" class="agency-form-input" id="signin-email" placeholder="e.g. client@example.com" required value="tanvir.client@gmail.com">
+            </div>
+            <div class="agency-form-group">
+              <label class="agency-form-label" data-en="Password" data-bn="পাসওয়ার্ড">Password</label>
+              <div class="password-input-wrap">
+                <input type="password" class="agency-form-input" id="signin-password" placeholder="Enter your password" required value="123456">
+                <button type="button" class="password-toggle-eye" id="toggle-pwd-signin" aria-label="Show password">👁️</button>
+              </div>
+            </div>
+            <button type="submit" class="agency-submit-btn" data-en="Sign In to Portal →" data-bn="পোর্টাল এ প্রবেশ করুন →">Sign In to Portal →</button>
+          </form>
+
+          <!-- Sign Up Form -->
+          <form id="auth-signup-form" style="display: none;">
+            <div class="agency-form-group">
+              <label class="agency-form-label" data-en="Full Name" data-bn="আপনার পূর্ণ নাম">Full Name</label>
+              <input type="text" class="agency-form-input" id="signup-name" placeholder="e.g. Mahmudul Hasan" required>
+            </div>
+            <div class="agency-form-group">
+              <label class="agency-form-label" data-en="Email Address" data-bn="ইমেইল ঠিকানা">Email Address</label>
+              <input type="email" class="agency-form-input" id="signup-email" placeholder="e.g. mahmud@example.com" required>
+            </div>
+            <div class="agency-form-group">
+              <label class="agency-form-label" data-en="Create Password" data-bn="নতুন পাসওয়ার্ড">Create Password</label>
+              <input type="password" class="agency-form-input" id="signup-password" placeholder="At least 6 characters" required>
+            </div>
+            <button type="submit" class="agency-submit-btn" data-en="Register &amp; Access Portal →" data-bn="একাউন্ট খুলুন ও শুরু করুন →">Register &amp; Access Portal →</button>
+          </form>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    // Tab switcher
+    const tabSignin = document.getElementById("tab-btn-signin");
+    const tabSignup = document.getElementById("tab-btn-signup");
+    const formSignin = document.getElementById("auth-signin-form");
+    const formSignup = document.getElementById("auth-signup-form");
+
+    tabSignin?.addEventListener("click", () => {
+      tabSignin.classList.add("active");
+      tabSignup.classList.remove("active");
+      formSignin.style.display = "block";
+      formSignup.style.display = "none";
+    });
+
+    tabSignup?.addEventListener("click", () => {
+      tabSignup.classList.add("active");
+      tabSignin.classList.remove("active");
+      formSignin.style.display = "none";
+      formSignup.style.display = "block";
+    });
+
+    // Password Eye toggle
+    const togglePwd = document.getElementById("toggle-pwd-signin");
+    const pwdInput = document.getElementById("signin-password");
+    togglePwd?.addEventListener("click", () => {
+      const isPwd = pwdInput.type === "password";
+      pwdInput.type = isPwd ? "text" : "password";
+      togglePwd.textContent = isPwd ? "🙈" : "👁️";
+    });
+
+    // Close handlers
+    document.getElementById("auth-modal-close-btn")?.addEventListener("click", closeAuthModal);
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeAuthModal();
+    });
+
+    // Demo Accounts Click
+    document.getElementById("demo-login-admin")?.addEventListener("click", () => {
+      loginUser({
+        name: "Rafiqul Islam",
+        email: "rafiqulislam.globalwork@gmail.com",
+        role: "admin",
+        avatar: "RI",
+        avatarImg: "assets/images/rafiqul-islam-portrait.jpg",
+        phone: "01310-824987"
+      });
+    });
+
+    document.getElementById("demo-login-client")?.addEventListener("click", () => {
+      loginUser({
+        name: "Tanvir Ahmed",
+        email: "tanvir.client@gmail.com",
+        role: "client",
+        avatar: "TA",
+        phone: "+8801712345678"
+      });
+    });
+
+    // Form Submit
+    formSignin?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const email = document.getElementById("signin-email").value.trim();
+      const name = email.split("@")[0].replace(".", " ");
+      const formattedName = name.charAt(0).toUpperCase() + name.slice(1);
+      const initials = (formattedName.split(" ")[0][0] + (formattedName.split(" ")[1] ? formattedName.split(" ")[1][0] : "")).toUpperCase();
+      loginUser({
+        name: formattedName,
+        email: email,
+        role: email.toLowerCase().includes("rafiqul") ? "admin" : "client",
+        avatar: initials || "CL",
+        phone: "01310-824987"
+      });
+    });
+
+    formSignup?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("signup-name").value.trim();
+      const email = document.getElementById("signup-email").value.trim();
+      const initials = (name.split(" ")[0][0] + (name.split(" ")[1] ? name.split(" ")[1][0] : "")).toUpperCase();
+      loginUser({
+        name: name,
+        email: email,
+        role: "client",
+        avatar: initials || "CL",
+        phone: ""
+      });
+    });
+  }
+
+  function openAuthModal() {
+    const modal = document.getElementById("auth-modal-overlay");
+    if (modal) modal.classList.add("active");
+  }
+
+  function closeAuthModal() {
+    const modal = document.getElementById("auth-modal-overlay");
+    if (modal) modal.classList.remove("active");
+  }
+
+  window.openAuthModal = openAuthModal;
+  window.closeAuthModal = closeAuthModal;
+
+  // Modal 2: 24/7 Support Desk
+  function createSupportModal() {
+    if (document.getElementById("support-system-modal")) return;
+    const modal = document.createElement("div");
+    modal.id = "support-system-modal";
+    modal.className = "agency-modal-overlay";
+    modal.innerHTML = `
+      <div class="agency-modal-card modal-card-lg">
+        <div class="agency-modal-header">
+          <div class="agency-modal-title-wrap">
+            <span class="agency-modal-icon">🎧</span>
+            <div>
+              <div class="agency-modal-title" data-en="24/7 Client Support Desk" data-bn="২৪/৭ ক্লায়েন্ট সাপোর্ট ডেস্ক">24/7 Client Support Desk</div>
+              <div class="agency-modal-subtitle" data-en="Direct Ticket Tracking &amp; Assistance from Rafiqul Islam" data-bn="রফিকুল ইসলাম ও সাপোর্ট টিমের সরাসরি সহায়তা">Direct Ticket Tracking &amp; Assistance from Rafiqul Islam</div>
+            </div>
+          </div>
+          <button class="agency-modal-close" id="support-modal-close-btn" aria-label="Close">✕</button>
+        </div>
+
+        <div class="support-tabs-nav">
+          <button class="support-tab-btn active" id="tab-support-submit" data-en="🎫 Submit Ticket" data-bn="🎫 নতুন টিকেট">🎫 Submit Ticket</button>
+          <button class="support-tab-btn" id="tab-support-tickets">
+            <span data-en="📋 My Tickets" data-bn="📋 টিকেট হিস্টোরি">📋 My Tickets</span>
+            <span class="support-tab-count" id="support-ticket-counter">1</span>
+          </button>
+          <button class="support-tab-btn" id="tab-support-instant" data-en="⚡ Instant Hotline" data-bn="⚡ সরাসরি হটলাইন">⚡ Instant Hotline</button>
+        </div>
+
+        <div class="agency-modal-body">
+          <!-- Tab 1: Submit Ticket -->
+          <div id="support-view-submit">
+            <form id="support-ticket-form">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="agency-form-group">
+                  <label class="agency-form-label" data-en="Your Name" data-bn="আপনার নাম">Your Name</label>
+                  <input type="text" class="agency-form-input" id="ticket-input-name" required placeholder="e.g. Tanvir Ahmed">
+                </div>
+                <div class="agency-form-group">
+                  <label class="agency-form-label" data-en="Email or Phone" data-bn="ইমেইল বা ফোন">Email or Phone</label>
+                  <input type="text" class="agency-form-input" id="ticket-input-contact" required placeholder="e.g. 01310-824987">
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 1rem;">
+                <div class="agency-form-group">
+                  <label class="agency-form-label" data-en="Service Category" data-bn="সার্ভিস বিভাগ">Service Category</label>
+                  <select class="agency-form-select" id="ticket-input-category" required>
+                    <option value="Website &amp; SEO">🌐 Website &amp; SEO Support</option>
+                    <option value="Amazon KDP">📚 Amazon KDP Publishing</option>
+                    <option value="Graphic Design">🎨 Graphic &amp; Brand Design</option>
+                    <option value="Active Marketplaces">💼 Marketplaces (Fiverr, Upwork)</option>
+                    <option value="Social Media">📱 Social Media Services</option>
+                    <option value="Career &amp; CV">📄 Career &amp; CV Services</option>
+                    <option value="Billing &amp; Quotation">💳 Billing, Payment &amp; Quotes</option>
+                    <option value="General Inquiry">💬 General Inquiry</option>
+                  </select>
+                </div>
+                <div class="agency-form-group">
+                  <label class="agency-form-label" data-en="Priority Level" data-bn="জরুরী মাত্রা">Priority Level</label>
+                  <div class="ticket-priority-grid">
+                    <button type="button" class="ticket-priority-opt active" data-priority="normal">🟢 Normal</button>
+                    <button type="button" class="ticket-priority-opt" data-priority="high">🟡 High</button>
+                    <button type="button" class="ticket-priority-opt" data-priority="urgent">🔴 Urgent</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="agency-form-group">
+                <label class="agency-form-label" data-en="Subject / Topic" data-bn="বিষয় / টপিক">Subject / Topic</label>
+                <input type="text" class="agency-form-input" id="ticket-input-subject" required placeholder="e.g. Update request on website hero banner">
+              </div>
+
+              <div class="agency-form-group">
+                <label class="agency-form-label" data-en="Detailed Description" data-bn="বিস্তারিত বিবরণ">Detailed Description</label>
+                <textarea class="agency-form-textarea" id="ticket-input-msg" required placeholder="Explain your requirement or issue clearly..."></textarea>
+              </div>
+
+              <button type="submit" class="agency-submit-btn" data-en="Submit Support Ticket 🚀" data-bn="সাপোর্ট টিকেট জমা দিন 🚀">Submit Support Ticket 🚀</button>
+            </form>
+          </div>
+
+          <!-- Tab 2: Tickets List -->
+          <div id="support-view-tickets" style="display: none;">
+            <div class="tickets-list-wrap" id="tickets-container-list">
+              <!-- Injected dynamically -->
+            </div>
+          </div>
+
+          <!-- Tab 3: Instant Hotline -->
+          <div id="support-view-instant" style="display: none;">
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+              <div style="padding: 1.25rem; border-radius: var(--radius-md); background: var(--bg-card); border: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+                <div>
+                  <h4 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 0.25rem;">WhatsApp Direct Support</h4>
+                  <p style="font-size: 0.85rem; color: var(--text-secondary);">Chat directly with Founder Rafiqul Islam for instant quote, emergency support or consult.</p>
+                  <span style="font-size: 0.78rem; font-weight: 700; color: #10b981;">● Typical response time: under 5 minutes</span>
+                </div>
+                <a href="https://wa.me/8801310824987?text=Hello%20Rafiqul%20Islam,%20I%20need%20urgent%20support%20regarding%20my%20project." target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
+                  <span>Chat on WhatsApp</span>
+                </a>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div style="padding: 1.15rem; border-radius: var(--radius-md); background: var(--bg-card); border: 1px solid var(--border-subtle);">
+                  <div style="font-size: 1.3rem; margin-bottom: 0.5rem;">📞</div>
+                  <strong style="color: var(--text-primary); font-size: 0.92rem; display: block; margin-bottom: 0.2rem;">Direct Mobile Call</strong>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 0.75rem;">01310-824987 (+8801310824987)</p>
+                  <a href="tel:01310824987" class="btn btn-secondary btn-sm">Call Now</a>
+                </div>
+
+                <div style="padding: 1.15rem; border-radius: var(--radius-md); background: var(--bg-card); border: 1px solid var(--border-subtle);">
+                  <div style="font-size: 1.3rem; margin-bottom: 0.5rem;">✉️</div>
+                  <strong style="color: var(--text-primary); font-size: 0.92rem; display: block; margin-bottom: 0.2rem;">Official Priority Email</strong>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 0.75rem;">rafiqulislam.globalwork@gmail.com</p>
+                  <a href="mailto:rafiqulislam.globalwork@gmail.com?subject=Support%20Inquiry%20-%20RI%20Creative%20Agency" class="btn btn-secondary btn-sm">Send Email</a>
+                </div>
+              </div>
+
+              <div style="padding: 1rem; border-radius: var(--radius-md); background: var(--bg-secondary); font-size: 0.82rem; color: var(--text-muted); line-height: 1.5;">
+                📍 <strong>Physical Lab &amp; Office:</strong> Jamirdia, Bhaluka, Mymensingh, Bangladesh.<br>
+                ⏰ <strong>Active Support Window:</strong> 7 Days a week, 9:00 AM – 11:00 PM (Bangladesh Time GMT+6).
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    // Tab Navigation
+    const tabSubmit = document.getElementById("tab-support-submit");
+    const tabTickets = document.getElementById("tab-support-tickets");
+    const tabInstant = document.getElementById("tab-support-instant");
+
+    const viewSubmit = document.getElementById("support-view-submit");
+    const viewTickets = document.getElementById("support-view-tickets");
+    const viewInstant = document.getElementById("support-view-instant");
+
+    function switchSupportTab(tabName) {
+      tabSubmit.classList.toggle("active", tabName === "submit");
+      tabTickets.classList.toggle("active", tabName === "tickets");
+      tabInstant.classList.toggle("active", tabName === "instant");
+
+      viewSubmit.style.display = tabName === "submit" ? "block" : "none";
+      viewTickets.style.display = tabName === "tickets" ? "block" : "none";
+      viewInstant.style.display = tabName === "instant" ? "block" : "none";
+
+      if (tabName === "tickets") renderTicketsList();
+    }
+
+    tabSubmit?.addEventListener("click", () => switchSupportTab("submit"));
+    tabTickets?.addEventListener("click", () => switchSupportTab("tickets"));
+    tabInstant?.addEventListener("click", () => switchSupportTab("instant"));
+
+    // Priority pills
+    let currentPriority = "normal";
+    const priorityOpts = modal.querySelectorAll(".ticket-priority-opt");
+    priorityOpts.forEach(opt => {
+      opt.addEventListener("click", () => {
+        priorityOpts.forEach(o => o.classList.remove("active"));
+        opt.classList.add("active");
+        currentPriority = opt.getAttribute("data-priority") || "normal";
+      });
+    });
+
+    // Close handlers
+    document.getElementById("support-modal-close-btn")?.addEventListener("click", closeSupportModal);
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeSupportModal();
+    });
+
+    // Submit ticket form handler
+    const form = document.getElementById("support-ticket-form");
+    form?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("ticket-input-name").value.trim();
+      const contact = document.getElementById("ticket-input-contact").value.trim();
+      const category = document.getElementById("ticket-input-category").value;
+      const subject = document.getElementById("ticket-input-subject").value.trim();
+      const msg = document.getElementById("ticket-input-msg").value.trim();
+
+      const ticketId = "RI-TICKET-" + Math.floor(1000 + Math.random() * 9000);
+      const newTicket = {
+        id: ticketId,
+        name: name,
+        email: contact,
+        category: category,
+        priority: currentPriority,
+        subject: subject,
+        message: msg,
+        status: "Open",
+        date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit" }),
+        assigned: "Rafiqul Islam (Founder)"
+      };
+
+      const existing = JSON.parse(localStorage.getItem("ri_support_tickets") || "[]");
+      existing.unshift(newTicket);
+      localStorage.setItem("ri_support_tickets", JSON.stringify(existing));
+
+      form.reset();
+      showToast(`Ticket ${ticketId} created successfully! Assigned to Rafiqul Islam.`, "🎫");
+      if (window.triggerChomok) {
+        window.triggerChomok(window.innerWidth / 2, window.innerHeight / 2, true);
+      }
+      switchSupportTab("tickets");
+    });
+  }
+
+  function renderTicketsList() {
+    const user = getCurrentUser();
+    const tickets = JSON.parse(localStorage.getItem("ri_support_tickets") || "[]");
+    const container = document.getElementById("tickets-container-list");
+    const counter = document.getElementById("support-ticket-counter");
+    if (counter) counter.textContent = tickets.length;
+    if (!container) return;
+
+    if (tickets.length === 0) {
+      container.innerHTML = `
+        <div style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
+          <span style="font-size: 2.5rem; display: block; margin-bottom: 0.5rem;">📭</span>
+          <strong>No support tickets found</strong>
+          <p style="font-size: 0.85rem; margin-top: 0.25rem;">Submit a ticket above to get direct assistance from Rafiqul Islam.</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = tickets.map((t, idx) => {
+      const isResolved = t.status.toLowerCase() === "resolved";
+      const statusClass = isResolved ? "status-resolved" : (t.status.toLowerCase().includes("review") ? "status-review" : "status-open");
+      const priorityEmoji = t.priority === "urgent" ? "🔴 Urgent" : (t.priority === "high" ? "🟡 High" : "🟢 Normal");
+      const waText = encodeURIComponent(`Hello Rafiqul Islam, regarding my Support Ticket ${t.id} (${t.subject}): `);
+
+      const adminActions = user && user.role === "admin" ? `
+        <button class="btn btn-secondary btn-sm" onclick="window.toggleTicketStatus(${idx})" style="font-size: 0.75rem; padding: 0.25rem 0.6rem;">
+          ${isResolved ? "↺ Re-open Ticket" : "✓ Mark Resolved"}
+        </button>
+      ` : "";
+
+      return `
+        <div class="ticket-item-card">
+          <div class="ticket-item-header">
+            <div style="display: flex; align-items: center; gap: 0.6rem;">
+              <span class="ticket-item-id">${t.id}</span>
+              <span style="font-size: 0.75rem; color: var(--text-muted);">• ${t.category}</span>
+              <span style="font-size: 0.72rem; font-weight: 700;">${priorityEmoji}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span class="ticket-badge-status ${statusClass}">${t.status}</span>
+              ${adminActions}
+            </div>
+          </div>
+          <div class="ticket-item-subject">${t.subject}</div>
+          <div class="ticket-item-msg">${t.message}</div>
+          <div class="ticket-item-footer">
+            <span>👤 ${t.name} (${t.email}) • 📅 ${t.date}</span>
+            <div style="display: flex; align-items: center; gap: 0.6rem;">
+              <span>Assigned: <strong>${t.assigned}</strong></span>
+              <a href="https://wa.me/8801310824987?text=${waText}" target="_blank" rel="noopener noreferrer" style="color: #10b981; font-weight: 700; text-decoration: underline;">WhatsApp Follow-up →</a>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  window.toggleTicketStatus = function(idx) {
+    const tickets = JSON.parse(localStorage.getItem("ri_support_tickets") || "[]");
+    if (tickets[idx]) {
+      tickets[idx].status = tickets[idx].status === "Resolved" ? "In Review" : "Resolved";
+      localStorage.setItem("ri_support_tickets", JSON.stringify(tickets));
+      renderTicketsList();
+      showToast(`Ticket ${tickets[idx].id} status updated to ${tickets[idx].status}`, "✓");
+    }
+  };
+
+  function openSupportModal() {
+    const modal = document.getElementById("support-system-modal");
+    if (modal) {
+      modal.classList.add("active");
+      const user = getCurrentUser();
+      const nameInput = document.getElementById("ticket-input-name");
+      const emailInput = document.getElementById("ticket-input-contact");
+      if (user && nameInput && !nameInput.value) {
+        nameInput.value = user.name;
+      }
+      if (user && emailInput && !emailInput.value) {
+        emailInput.value = user.email || user.phone;
+      }
+      const tickets = JSON.parse(localStorage.getItem("ri_support_tickets") || "[]");
+      const counter = document.getElementById("support-ticket-counter");
+      if (counter) counter.textContent = tickets.length;
+    }
+  }
+
+  function closeSupportModal() {
+    const modal = document.getElementById("support-system-modal");
+    if (modal) modal.classList.remove("active");
+  }
+
+  window.openSupportModal = openSupportModal;
+  window.closeSupportModal = closeSupportModal;
+
+  // Modal 3: Project & Orders Portal
+  function createProjectPortalModal() {
+    if (document.getElementById("client-portal-modal")) return;
+    const modal = document.createElement("div");
+    modal.id = "client-portal-modal";
+    modal.className = "agency-modal-overlay";
+    modal.innerHTML = `
+      <div class="agency-modal-card modal-card-lg">
+        <div class="agency-modal-header">
+          <div class="agency-modal-title-wrap">
+            <span class="agency-modal-icon">📊</span>
+            <div>
+              <div class="agency-modal-title" data-en="Active Client Projects &amp; Deliverables" data-bn="অ্যাক্টিভ ক্লায়েন্ট প্রজেক্ট ও ডেলিভারি">Active Client Projects &amp; Deliverables</div>
+              <div class="agency-modal-subtitle" data-en="Live sprint tracking, asset downloads &amp; milestones" data-bn="প্রজেক্টের অগ্রগতি, ফাইল ও ডেলিভারি ট্র্যাকিং">Live sprint tracking, asset downloads &amp; milestones</div>
+            </div>
+          </div>
+          <button class="agency-modal-close" id="portal-modal-close-btn" aria-label="Close">✕</button>
+        </div>
+        <div class="agency-modal-body">
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            <!-- Project 1 -->
+            <div style="padding: 1.25rem; border-radius: var(--radius-md); background: var(--bg-card); border: 1px solid var(--border-card);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+                <strong style="color: var(--text-primary); font-size: 1rem;">1. Full-Stack Agency Website Design &amp; SEO</strong>
+                <span class="status-open ticket-badge-status">In Progress (85%)</span>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Custom high-converting website design, responsive layouts, 3D luxury shadows, and technical SEO structure.</p>
+              <div style="height: 8px; border-radius: 4px; background: var(--border-subtle); overflow: hidden; margin-bottom: 0.85rem;">
+                <div style="width: 85%; height: 100%; background: var(--brand-gradient);"></div>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; color: var(--text-muted);">
+                <span>Lead: Rafiqul Islam • Next: Final Speed QA</span>
+                <button class="btn btn-secondary btn-sm" onclick="window.openSupportModal(); document.getElementById('portal-modal-close-btn').click();">Request Modification</button>
+              </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div style="padding: 1.25rem; border-radius: var(--radius-md); background: var(--bg-card); border: 1px solid var(--border-card);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+                <strong style="color: var(--text-primary); font-size: 1rem;">2. Amazon KDP Low-Content Book Formatting &amp; Cover</strong>
+                <span class="status-resolved ticket-badge-status">Completed &amp; Delivered</span>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Print-ready 300 DPI PDF interior layout, barcode calculation, and high-converting glossy cover wrap.</p>
+              <div style="height: 8px; border-radius: 4px; background: var(--border-subtle); overflow: hidden; margin-bottom: 0.85rem;">
+                <div style="width: 100%; height: 100%; background: #10b981;"></div>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; color: var(--text-muted);">
+                <span>Delivered on: 2026-09-07 • Formats: PDF, PNG, AI</span>
+                <a href="https://wa.me/8801310824987?text=Hello%20Rafiqul%20Islam,%20please%20resend%20the%20Amazon%20KDP%20deliverables." target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm">Download Assets (GDrive)</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    document.getElementById("portal-modal-close-btn")?.addEventListener("click", closeProjectPortalModal);
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeProjectPortalModal();
+    });
+  }
+
+  function openProjectPortalModal() {
+    const modal = document.getElementById("client-portal-modal");
+    if (modal) modal.classList.add("active");
+  }
+
+  function closeProjectPortalModal() {
+    const modal = document.getElementById("client-portal-modal");
+    if (modal) modal.classList.remove("active");
+  }
+
+  window.openProjectPortalModal = openProjectPortalModal;
+  window.closeProjectPortalModal = closeProjectPortalModal;
+
+  // Global trigger for any button with .open-support-modal
+  document.querySelectorAll(".open-support-modal").forEach(el => {
+    el.addEventListener("click", (e) => {
+      e.preventDefault();
+      openSupportModal();
+    });
+  });
+}
+
+/**
+ * ==========================================================================
+ * RI CREATIVE AGENCY - CLIENT CONVERSION & WORKFLOW MODULES
+ * Visual 11-Stage Order Tracker, Project Wizard, Quotes, Revisions, Reviews
+ * ==========================================================================
+ */
+function initClientConversionFeatures() {
+  createLeadMagnetModal();
+  createRevisionModal();
+  createReviewModal();
+  initOrderTrackerHandlers();
+  initProjectWizard();
+  initDedicatedQuoteForm();
+  initBeforeAfterSliders();
+  initDashboardController();
+  initAdminController();
+  initChecklistDownloadButtons();
+}
+
+/**
+ * 1. Visual 11-Stage Order Tracker Renderer
+ */
+function renderVisualOrderTracker(order, targetContainer) {
+  if (!targetContainer) return;
+
+  if (!order) {
+    targetContainer.innerHTML = `
+      <div style="text-align: center; padding: 3rem 1.5rem; background: var(--bg-surface); border: 1px solid var(--border-card); border-radius: var(--radius-lg);">
+        <div style="font-size: 3rem; margin-bottom: 1rem;">🔍</div>
+        <h3 style="font-size: 1.25rem; color: var(--text-primary); margin-bottom: 0.5rem;" data-en="Order Not Found" data-bn="অর্ডারটি পাওয়া যায়নি">Order Not Found</h3>
+        <p style="color: var(--text-secondary); max-width: 480px; margin: 0 auto 1.5rem; font-size: 0.9rem;" data-en="Please verify your Order ID (e.g., RI-1001, RI-1002, RI-1003) or contact Rafiqul Islam directly on WhatsApp." data-bn="অনুগ্রহ করে আপনার অর্ডার আইডি (যেমন: RI-1001, RI-1002) যাচাই করুন অথবা সরাসরি হোয়াটসঅ্যাপে যোগাযোগ করুন।">Please verify your Order ID (e.g., RI-1001, RI-1002, RI-1003) or contact Rafiqul Islam directly on WhatsApp.</p>
+        <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+          <button class="btn btn-secondary btn-sm" onclick="window.lookupOrderById('RI-1001')">Try Sample: RI-1001</button>
+          <button class="btn btn-secondary btn-sm" onclick="window.lookupOrderById('RI-1002')">Try Sample: RI-1002</button>
+          <a href="https://wa.me/8801310824987?text=Hello%20Rafiqul%20Islam,%20I%20need%20help%20tracking%20my%20order." target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">WhatsApp Help</a>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  const stages = (window.SITE_DATA && window.SITE_DATA.orderTrackingStages) || [
+    { stage: 1, nameEn: "Quote Requested", icon: "📝" },
+    { stage: 2, nameEn: "Requirements Clarification", icon: "📋" },
+    { stage: 3, nameEn: "Project Brief Lock", icon: "🔒" },
+    { stage: 4, nameEn: "Research & Strategy", icon: "💡" },
+    { stage: 5, nameEn: "Draft Ready", icon: "🎨" },
+    { stage: 6, nameEn: "Client Review", icon: "👀" },
+    { stage: 7, nameEn: "Revisions & Polish", icon: "✏️" },
+    { stage: 8, nameEn: "Final QA Check", icon: "🔍" },
+    { stage: 9, nameEn: "Client Final Approval", icon: "✅" },
+    { stage: 10, nameEn: "Files Handover", icon: "📦" },
+    { stage: 11, nameEn: "Completed & Review", icon: "⭐" }
+  ];
+
+  const currentStage = order.currentStage || 5;
+  const progressPercent = Math.min(100, Math.round((currentStage / 11) * 100));
+
+  const stagesHtml = stages.map(st => {
+    let stateClass = "pending";
+    let statusText = "Upcoming";
+
+    if (st.stage < currentStage) {
+      stateClass = "completed";
+      statusText = "Completed ✓";
+    } else if (st.stage === currentStage) {
+      stateClass = "active";
+      statusText = "In Progress ⚡";
+    }
+
+    return `
+      <div class="stage-node ${stateClass}" title="Stage ${st.stage}: ${st.nameEn} (${statusText})">
+        <div class="stage-circle">${st.stage < currentStage ? '✓' : st.icon}</div>
+        <div class="stage-info">
+          <div class="stage-name">${st.nameEn}</div>
+          <div class="stage-status-text">${statusText}</div>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  const deliverablesHtml = (order.deliverables && order.deliverables.length > 0)
+    ? order.deliverables.map(d => `
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.6rem 0.8rem; background: var(--bg-secondary); border-radius: var(--radius-sm); margin-bottom: 0.5rem; font-size: 0.85rem;">
+          <span style="font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 0.4rem;">📁 ${d.title}</span>
+          <a href="${d.url}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" style="padding: 0.25rem 0.65rem; font-size: 0.78rem;">${d.format || 'Download'}</a>
+        </div>
+      `).join("")
+    : `<p style="font-size: 0.85rem; color: var(--text-muted);">Deliverables will be unlocked upon final QA completion.</p>`;
+
+  const courierHtml = order.courierInfo
+    ? `
+      <div style="margin-top: 1rem; padding: 0.85rem; background: rgba(6, 182, 212, 0.08); border: 1px solid rgba(6, 182, 212, 0.25); border-radius: var(--radius-sm); font-size: 0.84rem;">
+        <div style="font-weight: 700; color: var(--brand-secondary); margin-bottom: 0.35rem;">🚚 Third-Party Courier Coordination</div>
+        <p style="margin: 0; color: var(--text-secondary); line-height: 1.4;">
+          Coordinated via <strong>${order.courierInfo.partner}</strong> • Tracking Code: <strong style="font-family: var(--font-mono);">${order.courierInfo.trackingCode}</strong> • Status: <strong>${order.courierInfo.status}</strong>
+        </p>
+        <p style="margin: 0.35rem 0 0; font-size: 0.75rem; color: var(--text-muted);">
+          * Note: Delivery is handled through independent third-party courier services.
+        </p>
+      </div>
+    `
+    : ``;
+
+  const waEscalateText = encodeURIComponent(`Hello Rafiqul Islam, regarding my order ${order.id} (${order.serviceName}): I would like an update on current Stage ${currentStage}.`);
+
+  targetContainer.innerHTML = `
+    <div class="tracking-wrapper">
+      <div class="tracking-header-bar">
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+            <span class="order-code-badge">ORDER ${order.id}</span>
+            <span style="font-size: 1.15rem; font-weight: 800; color: var(--text-primary);">${order.serviceName}</span>
+            <span style="font-size: 0.8rem; font-weight: 700; padding: 0.25rem 0.65rem; background: var(--accent-badge-bg); color: var(--brand-primary); border-radius: var(--radius-full);">${order.packageTier || 'STANDARD ⭐'}</span>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0.4rem 0 0;">
+            Client: <strong>${order.clientName}</strong> • Placed: ${order.createdAt || '2026-09-08'} • Target Delivery: <strong>${order.estimatedDelivery || 'In Progress'}</strong>
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+          <button class="btn btn-secondary btn-sm" onclick="window.openRevisionModal('${order.id}')">✏️ Request Revision</button>
+          <a href="https://wa.me/8801310824987?text=${waEscalateText}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" style="background: #10b981; border-color: #10b981;">WhatsApp Lead</a>
+        </div>
+      </div>
+
+      <div class="tracking-progress-overall">
+        <div class="progress-labels">
+          <span>Overall Workflow Progress (Stage ${currentStage} of 11)</span>
+          <span style="color: var(--brand-primary);">${progressPercent}% Completed</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill-bar" style="width: ${progressPercent}%;"></div>
+        </div>
+      </div>
+
+      <!-- 11-Stage Pipeline -->
+      <div class="stages-pipeline">
+        ${stagesHtml}
+      </div>
+
+      <!-- Overview Breakdown -->
+      <div class="order-overview-box">
+        <div class="overview-item">
+          <span>Project Lead</span>
+          <strong>${order.assignedLead || 'Rafiqul Islam (Lead Strategist)'}</strong>
+        </div>
+        <div class="overview-item">
+          <span>Current Stage Action</span>
+          <strong style="color: var(--brand-primary);">${order.currentStageName || 'Stage ' + currentStage}</strong>
+        </div>
+        <div class="overview-item">
+          <span>Revision Status</span>
+          <strong>${order.revisionsUsed || 0} / ${order.revisionsMax || 'Unlimited'} Used</strong>
+        </div>
+        <div class="overview-item">
+          <span>Project Investment</span>
+          <strong>${order.priceBDT || 'Standard Quote'}</strong>
+        </div>
+      </div>
+
+      ${courierHtml}
+
+      <!-- Actions & Deliverables -->
+      <div class="tracking-actions-area">
+        <div class="action-card">
+          <h4>📦 Project Deliverables & Handover</h4>
+          <div>${deliverablesHtml}</div>
+          <div style="margin-top: 1rem; font-size: 0.78rem; color: var(--text-muted);">
+            Includes full source assets, print-ready files, and commercial usage handover.
+          </div>
+        </div>
+
+        <div class="action-card">
+          <h4>💬 Need Adjustments or Consultation?</h4>
+          <p>
+            Have feedback on the latest draft? Submit structured revision notes or hop on a direct WhatsApp call with Rafiqul Islam.
+          </p>
+          <div style="display: flex; gap: 0.65rem; flex-wrap: wrap;">
+            <button class="btn btn-secondary btn-sm" onclick="window.openRevisionModal('${order.id}')">Submit Revision Notes</button>
+            <button class="btn btn-outline btn-sm" onclick="window.openReviewModal()">⭐ Leave Agency Review</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+/**
+ * 2. Order Lookup Handlers
+ */
+function initOrderTrackerHandlers() {
+  const searchBtn = document.getElementById("track-order-search-btn");
+  const searchInput = document.getElementById("track-order-input");
+  const resultContainer = document.getElementById("order-tracking-result-container");
+
+  const performLookup = (orderId) => {
+    if (!orderId) {
+      if (window.showToast) window.showToast("Please enter an Order ID", "⚠️");
+      return;
+    }
+    const cleanId = orderId.trim().toUpperCase();
+    const order = window.RIApiService ? window.RIApiService.getOrderById(cleanId) : null;
+    
+    if (resultContainer) {
+      renderVisualOrderTracker(order, resultContainer);
+      resultContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  window.lookupOrderById = (id) => {
+    if (searchInput) searchInput.value = id;
+    performLookup(id);
+  };
+
+  if (searchBtn && searchInput) {
+    searchBtn.addEventListener("click", () => performLookup(searchInput.value));
+    searchInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") performLookup(searchInput.value);
+    });
+  }
+
+  // Check URL parameters for ?order=RI-XXXX
+  const urlParams = new URLSearchParams(window.location.search);
+  const paramOrderId = urlParams.get("order");
+  if (paramOrderId && resultContainer) {
+    lookupOrderById(paramOrderId);
+  }
+}
+
+/**
+ * 3. 6-Step Project Start Wizard Controller
+ */
+function initProjectWizard() {
+  const wizardForm = document.getElementById("project-wizard-form");
+  if (!wizardForm) return;
+
+  let currentStep = 1;
+  const totalSteps = 6;
+
+  const stepTabs = document.querySelectorAll(".wizard-step-tab");
+  const stepPanes = document.querySelectorAll(".wizard-pane");
+  const prevBtn = document.getElementById("wizard-prev-btn");
+  const nextBtn = document.getElementById("wizard-next-btn");
+  const submitBtn = document.getElementById("wizard-submit-btn");
+
+  const updateWizardUI = () => {
+    stepPanes.forEach(p => p.classList.remove("active"));
+    const activePane = document.querySelector(`.wizard-pane[data-step="${currentStep}"]`);
+    if (activePane) activePane.classList.add("active");
+
+    stepTabs.forEach(t => {
+      const stepVal = parseInt(t.getAttribute("data-step"), 10);
+      t.classList.remove("active", "completed");
+      if (stepVal === currentStep) {
+        t.classList.add("active");
+      } else if (stepVal < currentStep) {
+        t.classList.add("completed");
+      }
+    });
+
+    if (prevBtn) prevBtn.style.display = currentStep > 1 ? "inline-flex" : "none";
+    if (nextBtn) nextBtn.style.display = currentStep < totalSteps ? "inline-flex" : "none";
+    if (submitBtn) submitBtn.style.display = currentStep === totalSteps ? "inline-flex" : "none";
+
+    // If on Step 6, update summary review card
+    if (currentStep === 6) {
+      updateWizardSummary();
+    }
+  };
+
+  const updateWizardSummary = () => {
+    const summaryBox = document.getElementById("wizard-summary-content");
+    if (!summaryBox) return;
+
+    const selectedService = document.querySelector('input[name="wizard_service"]:checked')?.value || "Creative Design & Branding";
+    const selectedPackage = document.querySelector('input[name="wizard_package"]:checked')?.value || "STANDARD ⭐ (Most Popular)";
+    const clientName = document.getElementById("wz-name")?.value || "Valued Client";
+    const clientPhone = document.getElementById("wz-phone")?.value || "01310-824987";
+    const clientEmail = document.getElementById("wz-email")?.value || "client@example.com";
+    const timeline = document.querySelector('input[name="wizard_timeline"]:checked')?.value || "Standard Delivery";
+
+    summaryBox.innerHTML = `
+      <div style="background: var(--bg-secondary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; font-size: 0.9rem; line-height: 1.6;">
+        <div style="margin-bottom: 0.5rem;"><strong>Selected Service:</strong> ${selectedService}</div>
+        <div style="margin-bottom: 0.5rem;"><strong>Package Tier:</strong> <span style="color: var(--brand-primary); font-weight: 700;">${selectedPackage}</span></div>
+        <div style="margin-bottom: 0.5rem;"><strong>Client Name:</strong> ${clientName}</div>
+        <div style="margin-bottom: 0.5rem;"><strong>Contact Details:</strong> ${clientPhone} • ${clientEmail}</div>
+        <div style="margin-bottom: 0.5rem;"><strong>Timeline Preference:</strong> ${timeline}</div>
+        <div style="margin-top: 0.85rem; padding-top: 0.85rem; border-top: 1px dashed var(--border-subtle); font-size: 0.82rem; color: var(--text-secondary);">
+          ✓ 100% Satisfaction Guarantee • Direct WhatsApp Updates • Official Milestone Tracking
+        </div>
+      </div>
+    `;
+  };
+
+  if (nextBtn) {
+    nextBtn.addEventListener("click", () => {
+      // Step validations
+      if (currentStep === 1) {
+        const checked = document.querySelector('input[name="wizard_service"]:checked');
+        if (!checked) {
+          if (window.showToast) window.showToast("Please select a primary service category", "⚠️");
+          return;
+        }
+      } else if (currentStep === 2) {
+        const checked = document.querySelector('input[name="wizard_package"]:checked');
+        if (!checked) {
+          if (window.showToast) window.showToast("Please select your preferred package tier", "⚠️");
+          return;
+        }
+      } else if (currentStep === 4) {
+        const nameVal = document.getElementById("wz-name")?.value.trim();
+        const phoneVal = document.getElementById("wz-phone")?.value.trim();
+        if (!nameVal || !phoneVal) {
+          if (window.showToast) window.showToast("Please provide your name and WhatsApp/phone number", "⚠️");
+          return;
+        }
+      }
+
+      if (currentStep < totalSteps) {
+        currentStep++;
+        updateWizardUI();
+      }
+    });
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener("click", () => {
+      if (currentStep > 1) {
+        currentStep--;
+        updateWizardUI();
+      }
+    });
+  }
+
+  stepTabs.forEach(t => {
+    t.addEventListener("click", () => {
+      const targetStep = parseInt(t.getAttribute("data-step"), 10);
+      if (targetStep <= currentStep) {
+        currentStep = targetStep;
+        updateWizardUI();
+      }
+    });
+  });
+
+  wizardForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const selectedService = document.querySelector('input[name="wizard_service"]:checked')?.value || "Creative Design & Branding";
+    const selectedPackage = document.querySelector('input[name="wizard_package"]:checked')?.value || "STANDARD ⭐";
+    const clientName = document.getElementById("wz-name")?.value || "Client";
+    const clientPhone = document.getElementById("wz-phone")?.value || "";
+    const clientEmail = document.getElementById("wz-email")?.value || "";
+    const requirements = document.getElementById("wz-requirements")?.value || "";
+
+    const newOrder = window.RIApiService ? window.RIApiService.createOrder({
+      serviceName: selectedService,
+      packageTier: selectedPackage,
+      clientName: clientName,
+      clientPhone: clientPhone,
+      clientEmail: clientEmail,
+      requirements: requirements,
+      estimatedDelivery: "3-5 Business Days",
+      priceBDT: "Custom Transparent Invoice",
+      currentStage: 1,
+      currentStageName: "Quote Requested / Initiated"
+    }) : { id: "RI-" + Math.floor(1000 + Math.random() * 9000) };
+
+    // Dispatch background email notification to Founder
+    if (window.EmailService) {
+      window.EmailService.sendInquiry({
+        name: clientName,
+        phone: clientPhone,
+        email: clientEmail,
+        service: selectedService,
+        packageTier: selectedPackage,
+        message: requirements,
+        refId: newOrder.id
+      }).catch(err => console.warn("Email dispatch notice:", err));
+    }
+
+    const successModal = document.createElement("div");
+    successModal.className = "agency-modal-overlay active";
+    successModal.innerHTML = `
+      <div class="agency-modal-card" style="max-width: 520px; text-align: center; padding: 2.5rem 2rem;">
+        <div style="font-size: 3.5rem; margin-bottom: 1rem;">🎉</div>
+        <h3 style="font-size: 1.4rem; color: var(--text-primary); margin-bottom: 0.5rem;">Project Successfully Initialized!</h3>
+        <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.5rem;">
+          Your official order tracking ID is <strong style="font-family: var(--font-mono); color: var(--brand-primary); font-size: 1.1rem;">${newOrder.id}</strong>. Rafiqul Islam has received your brief via email and will review your specifications immediately.
+        </p>
+        <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+          <a href="track-order.html?order=${newOrder.id}" class="btn btn-primary">Track Order Live →</a>
+          <a href="https://wa.me/8801310824987?text=Hello%20Rafiqul%20Islam,%20I%20just%20started%20project%20${newOrder.id}%20for%20${encodeURIComponent(selectedService)}." target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="background: #10b981; color: #ffffff; border-color: #10b981;">WhatsApp Notice</a>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(successModal);
+  });
+
+  // Make selectable cards interactive
+  document.querySelectorAll(".selectable-card").forEach(card => {
+    card.addEventListener("click", () => {
+      const parentGrid = card.closest(".selectable-cards-grid");
+      if (parentGrid) {
+        parentGrid.querySelectorAll(".selectable-card").forEach(c => c.classList.remove("selected"));
+      }
+      card.classList.add("selected");
+      const radio = card.querySelector('input[type="radio"]');
+      if (radio) radio.checked = true;
+    });
+  });
+
+  updateWizardUI();
+}
+
+/**
+ * 4. Dedicated Free Quote Form Submission
+ */
+function initDedicatedQuoteForm() {
+  const quoteForm = document.getElementById("dedicated-quote-form");
+  if (!quoteForm) return;
+
+  quoteForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById("q-name")?.value.trim();
+    const email = document.getElementById("q-email")?.value.trim();
+    const phone = document.getElementById("q-phone")?.value.trim();
+    const service = document.getElementById("q-service")?.value;
+    const packageTier = document.getElementById("q-package")?.value || "Standard";
+    const budget = document.getElementById("q-budget")?.value || "Flexible";
+    const timeline = document.getElementById("q-timeline")?.value || "1-2 Weeks";
+    const details = document.getElementById("q-details")?.value.trim();
+
+    if (!name || !phone || !details) {
+      if (window.showToast) window.showToast("Please fill in your name, contact and project details", "⚠️");
+      return;
+    }
+
+    const submitBtn = quoteForm.querySelector("button[type='submit']");
+    const originalBtnText = submitBtn ? submitBtn.innerHTML : "Submit";
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<span>⏳ Sending Email &amp; Quote Request...</span>`;
+    }
+
+    try {
+      let result;
+      if (window.EmailService) {
+        result = await window.EmailService.sendInquiry({
+          name,
+          email,
+          phone,
+          service,
+          packageTier,
+          budget,
+          timeline,
+          message: details
+        });
+      } else {
+        result = {
+          refId: "QT-" + Math.floor(1000 + Math.random() * 9000),
+          emailSent: false,
+          data: { name, email, phone, service, packageTier, budget, timeline, message: details }
+        };
+      }
+
+      // Show interactive confirmation modal
+      if (window.EmailService && typeof window.EmailService.showConfirmationModal === "function") {
+        window.EmailService.showConfirmationModal(result);
+      }
+
+      quoteForm.reset();
+    } catch (err) {
+      console.error("Quote submit error:", err);
+      alert("Something went wrong while sending your quote. Please contact directly via WhatsApp: 01310-824987");
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnText;
+      }
+    }
+  });
+}
+
+/**
+ * 5. Lead Magnet / Free Checklist Download Modal
+ */
+function createLeadMagnetModal() {
+  if (document.getElementById("lead-magnet-modal")) return;
+
+  const modal = document.createElement("div");
+  modal.id = "lead-magnet-modal";
+  modal.className = "agency-modal-overlay";
+  modal.innerHTML = `
+    <div class="agency-modal-card" style="max-width: 460px;">
+      <div class="agency-modal-header">
+        <div class="agency-modal-title-wrap">
+          <span class="agency-modal-icon">📥</span>
+          <div>
+            <div class="agency-modal-title" id="lm-modal-title">Download Free Guide</div>
+            <div class="agency-modal-subtitle">Instant PDF Checklist by RI Creative Agency</div>
+          </div>
+        </div>
+        <button class="agency-modal-close" onclick="window.closeLeadMagnetModal()">✕</button>
+      </div>
+      <div class="agency-modal-body">
+        <p id="lm-modal-desc" style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.25rem;">
+          Enter your name and email to receive the direct download link immediately.
+        </p>
+        <form id="lead-magnet-form" style="display: flex; flex-direction: column; gap: 1rem;">
+          <input type="hidden" id="lm-resource-id" value="">
+          <div class="input-group-custom">
+            <label>Your Full Name *</label>
+            <input type="text" id="lm-name" class="input-custom" placeholder="e.g. Rafiqul Islam" required>
+          </div>
+          <div class="input-group-custom">
+            <label>Work Email Address *</label>
+            <input type="email" id="lm-email" class="input-custom" placeholder="name@company.com" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Download Free Checklist (Instant PDF)</button>
+        </form>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+
+  document.getElementById("lead-magnet-form")?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const id = document.getElementById("lm-resource-id")?.value;
+    const name = document.getElementById("lm-name")?.value;
+    const email = document.getElementById("lm-email")?.value;
+
+    if (window.RIApiService) {
+      window.RIApiService.captureLead({ resourceId: id, name, email });
+    }
+
+    window.closeLeadMagnetModal();
+    if (window.showToast) window.showToast("Checklist download started! Thank you.", "✓");
+
+    // Synthetic PDF download trigger
+    const dummyA = document.createElement("a");
+    dummyA.href = "assets/images/portfolio_mockup.jpg";
+    dummyA.download = `RI-Creative-Agency-${id || 'Checklist'}.pdf`;
+    document.body.appendChild(dummyA);
+    dummyA.click();
+    dummyA.remove();
+  });
+}
+
+function openLeadMagnetModal(resourceId) {
+  const modal = document.getElementById("lead-magnet-modal");
+  if (!modal) return;
+
+  const resource = (window.SITE_DATA && window.SITE_DATA.freeResources)
+    ? window.SITE_DATA.freeResources.find(r => r.id === resourceId)
+    : null;
+
+  if (resource) {
+    document.getElementById("lm-modal-title").textContent = resource.titleEn;
+    document.getElementById("lm-modal-desc").textContent = resource.descriptionEn;
+    document.getElementById("lm-resource-id").value = resource.id;
+  }
+
+  modal.classList.add("active");
+}
+
+function closeLeadMagnetModal() {
+  document.getElementById("lead-magnet-modal")?.classList.remove("active");
+}
+
+window.openLeadMagnetModal = openLeadMagnetModal;
+window.closeLeadMagnetModal = closeLeadMagnetModal;
+
+function initChecklistDownloadButtons() {
+  document.querySelectorAll(".magnet-download-btn, .btn-download-resource").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const resId = btn.getAttribute("data-resource-id") || "kdp-checklist";
+      openLeadMagnetModal(resId);
+    });
+  });
+}
+
+/**
+ * 6. Revision Request Modal
+ */
+function createRevisionModal() {
+  if (document.getElementById("revision-request-modal")) return;
+
+  const modal = document.createElement("div");
+  modal.id = "revision-request-modal";
+  modal.className = "agency-modal-overlay";
+  modal.innerHTML = `
+    <div class="agency-modal-card" style="max-width: 500px;">
+      <div class="agency-modal-header">
+        <div class="agency-modal-title-wrap">
+          <span class="agency-modal-icon">✏️</span>
+          <div>
+            <div class="agency-modal-title">Request Project Revision</div>
+            <div class="agency-modal-subtitle">Dedicated Milestone & Draft Adjustments</div>
+          </div>
+        </div>
+        <button class="agency-modal-close" onclick="window.closeRevisionModal()">✕</button>
+      </div>
+      <div class="agency-modal-body">
+        <form id="revision-request-form" style="display: flex; flex-direction: column; gap: 1rem;">
+          <div class="input-group-custom">
+            <label>Order ID *</label>
+            <input type="text" id="rev-order-id" class="input-custom" placeholder="e.g. RI-1001" required>
+          </div>
+          <div class="input-group-custom">
+            <label>Detailed Revision Notes *</label>
+            <textarea id="rev-notes" class="input-custom" rows="4" placeholder="Be as specific as possible: e.g. change accent color to cyan, increase font size of hero headline..." required></textarea>
+          </div>
+          <div class="input-group-custom">
+            <label>Reference Link / Google Drive / Screenshot (Optional)</label>
+            <input type="url" id="rev-link" class="input-custom" placeholder="https://drive.google.com/...">
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Submit Revision Notes</button>
+        </form>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+
+  document.getElementById("revision-request-form")?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const orderId = document.getElementById("rev-order-id")?.value.trim().toUpperCase();
+    const notes = document.getElementById("rev-notes")?.value.trim();
+    const link = document.getElementById("rev-link")?.value.trim();
+
+    if (window.RIApiService) {
+      const res = window.RIApiService.requestRevision(orderId, { notes, link });
+      if (res.success) {
+        if (window.showToast) window.showToast(`Revision logged for ${orderId}! Stage updated.`, "✓");
+        const container = document.getElementById("order-tracking-result-container");
+        if (container) {
+          renderVisualOrderTracker(res.order, container);
+        }
+      } else {
+        if (window.showToast) window.showToast(res.message, "⚠️");
+      }
+    }
+
+    window.closeRevisionModal();
+  });
+}
+
+function openRevisionModal(orderId) {
+  const modal = document.getElementById("revision-request-modal");
+  if (!modal) return;
+  if (orderId) {
+    const input = document.getElementById("rev-order-id");
+    if (input) input.value = orderId;
+  }
+  modal.classList.add("active");
+}
+
+function closeRevisionModal() {
+  document.getElementById("revision-request-modal")?.classList.remove("active");
+}
+
+window.openRevisionModal = openRevisionModal;
+window.closeRevisionModal = closeRevisionModal;
+
+/**
+ * 7. Client Review Submission Modal
+ */
+function createReviewModal() {
+  if (document.getElementById("review-submit-modal")) return;
+
+  const modal = document.createElement("div");
+  modal.id = "review-submit-modal";
+  modal.className = "agency-modal-overlay";
+  modal.innerHTML = `
+    <div class="agency-modal-card" style="max-width: 480px;">
+      <div class="agency-modal-header">
+        <div class="agency-modal-title-wrap">
+          <span class="agency-modal-icon">⭐</span>
+          <div>
+            <div class="agency-modal-title">Leave a Verified Client Review</div>
+            <div class="agency-modal-subtitle">Share your experience working with RI Creative Agency</div>
+          </div>
+        </div>
+        <button class="agency-modal-close" onclick="window.closeReviewModal()">✕</button>
+      </div>
+      <div class="agency-modal-body">
+        <form id="review-submit-form" style="display: flex; flex-direction: column; gap: 1rem;">
+          <div class="input-group-custom">
+            <label>Rating</label>
+            <select id="rev-rating" class="input-custom">
+              <option value="5">⭐⭐⭐⭐⭐ 5 Stars - Exceptional Quality & Speed</option>
+              <option value="4">⭐⭐⭐⭐ 4 Stars - Very Good Experience</option>
+              <option value="3">⭐⭐⭐ 3 Stars - Average Service</option>
+            </select>
+          </div>
+          <div class="input-group-custom">
+            <label>Your Name & Title *</label>
+            <input type="text" id="rev-client-name" class="input-custom" placeholder="e.g. Tanvir Ahmed, Founder at Bloom Attire" required>
+          </div>
+          <div class="input-group-custom">
+            <label>Service Provided *</label>
+            <input type="text" id="rev-service-tag" class="input-custom" placeholder="e.g. Brand Identity & Packaging Design" required>
+          </div>
+          <div class="input-group-custom">
+            <label>Your Review / Testimonial *</label>
+            <textarea id="rev-text" class="input-custom" rows="3" placeholder="How did RI Creative Agency help your brand or project?" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Publish Review</button>
+        </form>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+
+  document.getElementById("review-submit-form")?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const rating = parseInt(document.getElementById("rev-rating")?.value || "5", 10);
+    const clientName = document.getElementById("rev-client-name")?.value.trim();
+    const serviceTag = document.getElementById("rev-service-tag")?.value.trim();
+    const text = document.getElementById("rev-text")?.value.trim();
+
+    if (window.RIApiService) {
+      window.RIApiService.addReview({ rating, clientName, serviceTag, text });
+    }
+
+    if (window.showToast) window.showToast("Review submitted successfully! Thank you.", "✓");
+    window.closeReviewModal();
+  });
+}
+
+function openReviewModal() {
+  document.getElementById("review-submit-modal")?.classList.add("active");
+}
+
+function closeReviewModal() {
+  document.getElementById("review-submit-modal")?.classList.remove("active");
+}
+
+window.openReviewModal = openReviewModal;
+window.closeReviewModal = closeReviewModal;
+
+/**
+ * 8. Before / After Interactive Comparison Slider
+ */
+function initBeforeAfterSliders() {
+  const cards = document.querySelectorAll(".before-after-card");
+
+  cards.forEach(card => {
+    const wrap = card.querySelector(".comparison-images-wrap");
+    const afterImg = card.querySelector(".comp-img.after");
+    const handle = card.querySelector(".comparison-slider-handle");
+
+    if (!wrap || !afterImg || !handle) return;
+
+    let isDown = false;
+
+    const setPosition = (clientX) => {
+      const rect = wrap.getBoundingClientRect();
+      let offsetX = clientX - rect.left;
+      if (offsetX < 0) offsetX = 0;
+      if (offsetX > rect.width) offsetX = rect.width;
+      const percentage = (offsetX / rect.width) * 100;
+
+      afterImg.style.clipPath = `polygon(${percentage}% 0, 100% 0, 100% 100%, ${percentage}% 100%)`;
+      handle.style.left = `${percentage}%`;
+    };
+
+    wrap.addEventListener("mousedown", (e) => {
+      isDown = true;
+      setPosition(e.clientX);
+    });
+
+    window.addEventListener("mouseup", () => { isDown = false; });
+    window.addEventListener("mousemove", (e) => {
+      if (isDown) setPosition(e.clientX);
+    });
+
+    wrap.addEventListener("touchstart", (e) => {
+      isDown = true;
+      if (e.touches[0]) setPosition(e.touches[0].clientX);
+    });
+
+    window.addEventListener("touchend", () => { isDown = false; });
+    wrap.addEventListener("touchmove", (e) => {
+      if (isDown && e.touches[0]) setPosition(e.touches[0].clientX);
+    });
+  });
+}
+
+/**
+ * 9. Client Dashboard Controller (dashboard.html)
+ */
+function initDashboardController() {
+  const container = document.getElementById("client-dashboard-orders-container");
+  if (!container) return;
+
+  const orders = window.RIApiService ? window.RIApiService.getOrders() : [];
+  const metricsTotal = document.getElementById("dash-stat-total-orders");
+  const metricsActive = document.getElementById("dash-stat-active-orders");
+  const metricsDelivered = document.getElementById("dash-stat-delivered-orders");
+
+  const activeCount = orders.filter(o => o.currentStage < 11).length;
+  const deliveredCount = orders.filter(o => o.currentStage >= 10).length;
+
+  if (metricsTotal) metricsTotal.textContent = orders.length;
+  if (metricsActive) metricsActive.textContent = activeCount;
+  if (metricsDelivered) metricsDelivered.textContent = deliveredCount;
+
+  if (orders.length === 0) {
+    container.innerHTML = `
+      <tr>
+        <td colspan="6" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+          No active projects found. <a href="start-project.html" style="color: var(--brand-primary); font-weight: 700;">Start a Project Now →</a>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  container.innerHTML = orders.map(ord => {
+    const isDone = ord.currentStage >= 10;
+    const badgeClass = isDone ? 'ticket-badge-status status-resolved' : 'ticket-badge-status status-open';
+    const stageLabel = `Stage ${ord.currentStage || 1}: ${ord.currentStageName || 'In Progress'}`;
+
+    return `
+      <tr>
+        <td><strong style="font-family: var(--font-mono); color: var(--brand-primary);">${ord.id}</strong></td>
+        <td>
+          <div style="font-weight: 700; color: var(--text-primary);">${ord.serviceName}</div>
+          <div style="font-size: 0.78rem; color: var(--text-muted);">${ord.packageTier || 'Standard'}</div>
+        </td>
+        <td><span class="${badgeClass}">${stageLabel}</span></td>
+        <td>${ord.estimatedDelivery || 'In Progress'}</td>
+        <td>${ord.priceBDT || 'Quote'}</td>
+        <td>
+          <div style="display: flex; gap: 0.4rem;">
+            <a href="track-order.html?order=${ord.id}" class="btn btn-secondary btn-sm">Track</a>
+            <button class="btn btn-outline btn-sm" onclick="window.openRevisionModal('${ord.id}')">Revise</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join("");
+}
+
+/**
+ * 10. Admin Management Controller (admin.html)
+ */
+function initAdminController() {
+  const container = document.getElementById("admin-orders-table-body");
+  if (!container) return;
+
+  const renderAdminOrders = () => {
+    const orders = window.RIApiService ? window.RIApiService.getOrders() : [];
+    const quotes = window.RIApiService ? window.RIApiService.getQuotes() : [];
+
+    const statOrders = document.getElementById("admin-stat-orders");
+    const statActive = document.getElementById("admin-stat-active");
+    const statQuotes = document.getElementById("admin-stat-quotes");
+
+    if (statOrders) statOrders.textContent = orders.length;
+    if (statActive) statActive.textContent = orders.filter(o => o.currentStage < 11).length;
+    if (statQuotes) statQuotes.textContent = quotes.length;
+
+    container.innerHTML = orders.map(ord => {
+      const stageOptions = [1,2,3,4,5,6,7,8,9,10,11].map(s => `
+        <option value="${s}" ${ord.currentStage === s ? 'selected' : ''}>Stage ${s}</option>
+      `).join("");
+
+      return `
+        <tr>
+          <td><strong style="font-family: var(--font-mono);">${ord.id}</strong></td>
+          <td>
+            <div style="font-weight: 700;">${ord.clientName}</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">${ord.clientPhone || ''}</div>
+          </td>
+          <td>${ord.serviceName}</td>
+          <td>
+            <select class="input-custom" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;" onchange="window.adminUpdateStage('${ord.id}', this.value)">
+              ${stageOptions}
+            </select>
+          </td>
+          <td>${ord.estimatedDelivery || 'In Progress'}</td>
+          <td>
+            <div style="display: flex; gap: 0.35rem;">
+              <a href="track-order.html?order=${ord.id}" target="_blank" class="btn btn-secondary btn-sm" style="padding: 0.25rem 0.5rem;">View</a>
+              <button class="btn btn-primary btn-sm" style="padding: 0.25rem 0.5rem; background: #10b981; border-color: #10b981;" onclick="window.adminAddDeliverablePrompt('${ord.id}')">+ File</button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join("");
+  };
+
+  window.adminUpdateStage = (orderId, newStage) => {
+    if (window.RIApiService) {
+      window.RIApiService.updateOrderStatus(orderId, parseInt(newStage, 10), `Updated by Rafiqul Islam to Stage ${newStage}`);
+      if (window.showToast) window.showToast(`Order ${orderId} updated to Stage ${newStage}`, "✓");
+      renderAdminOrders();
+    }
+  };
+
+  window.adminAddDeliverablePrompt = (orderId) => {
+    const title = prompt("Deliverable Title (e.g., Final Vector Logo Pack):");
+    if (!title) return;
+    const url = prompt("Asset URL (e.g. Google Drive link or file URL):", "https://drive.google.com");
+    if (!url) return;
+
+    if (window.RIApiService) {
+      window.RIApiService.addDeliverable(orderId, { title, url, format: "ZIP / PDF" });
+      if (window.showToast) window.showToast(`Deliverable attached to ${orderId}!`, "✓");
+      renderAdminOrders();
+    }
+  };
+
+  renderAdminOrders();
+}
+
+
 
