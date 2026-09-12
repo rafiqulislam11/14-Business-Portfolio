@@ -122,6 +122,93 @@
   }
 }
 
+/* 3D Logo Holographic Diagonal Light Sweep */
+@keyframes logoLightSweep {
+  0% {
+    transform: translateX(-150%) skewX(-25deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.85;
+  }
+  40%, 100% {
+    transform: translateX(250%) skewX(-25deg);
+    opacity: 0;
+  }
+}
+
+/* Aurora Fluid Glowing Border Shift */
+@keyframes auroraBorderShift {
+  0% {
+    background-position: 0% 50%;
+    filter: hue-rotate(0deg);
+  }
+  50% {
+    background-position: 100% 50%;
+    filter: hue-rotate(30deg);
+  }
+  100% {
+    background-position: 0% 50%;
+    filter: hue-rotate(0deg);
+  }
+}
+
+/* Living Accent Neon Pulse (Brand Dot & Badges) */
+@keyframes brandDotPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.8), 0 0 20px rgba(0, 229, 255, 0.4);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.15);
+    text-shadow: 0 0 16px rgba(0, 229, 255, 1), 0 0 30px rgba(2, 132, 199, 0.8);
+  }
+}
+
+/* Mini ATS Nav Badge Breathing Pulse */
+@keyframes miniBadgePulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.7);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 4px rgba(2, 132, 199, 0);
+  }
+}
+
+/* Electric CTA Glow Pulse */
+@keyframes ctaElectricGlow {
+  0%, 100% {
+    box-shadow: 0 4px 15px color-mix(in srgb, var(--brand-primary) 40%, transparent), 0 0 20px color-mix(in srgb, var(--brand-primary) 20%, transparent);
+  }
+  50% {
+    box-shadow: 0 6px 25px color-mix(in srgb, var(--brand-primary) 65%, transparent), 0 0 35px color-mix(in srgb, var(--brand-secondary) 35%, transparent);
+  }
+}
+
+/* Micro Arrow Forward Drift */
+@keyframes arrowDrift {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+}
+
+/* Download Arrow Micro Bounce */
+@keyframes downloadArrowBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(2.5px);
+  }
+}
+
 /* Reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
@@ -131,4 +218,5 @@
     scroll-behavior: auto !important;
   }
 }
+
 

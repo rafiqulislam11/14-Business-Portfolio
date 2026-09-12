@@ -548,35 +548,35 @@ const RI_PALETTES = {
     id: "aurora",
     nameEn: "Cyber Aurora",
     nameBn: "সাইবার অরোরা",
-    descEn: "Electric Indigo & Vivid Cyan (Default Notun Style)",
-    descBn: "ইলেকট্রিক ইন্ডিগো ও সায়ান (নতুন স্টাইল)",
+    descEn: "Electric Indigo & Vivid Cyan (Default Tech Vibe)",
+    descBn: "ইলেকট্রিক ইন্ডিগো ও সায়ান (ডিফল্ট টেক লুক)",
     dots: ["#4f46e5", "#06b6d4", "#ec4899"],
     primary: "#4f46e5"
-  },
-  amethyst: {
-    id: "amethyst",
-    nameEn: "Royal Amethyst",
-    nameBn: "রয়্যাল অ্যামিথিস্ট",
-    descEn: "Imperial Purple & Fuchsia Rose",
-    descBn: "ইম্পেরিয়াল পার্পল ও ফুসিয়া রোজ",
-    dots: ["#7c3aed", "#ec4899", "#f43f5e"],
-    primary: "#7c3aed"
   },
   sapphire: {
     id: "sapphire",
     nameEn: "Ocean Sapphire",
     nameBn: "ওশান স্যাফায়ার",
-    descEn: "Vivid Cobalt & Ocean Mint Teal",
-    descBn: "কোবাল্ট ব্লু ও ওশান মিন্ট টিল",
+    descEn: "Vivid Cobalt & Ocean Mint Teal (Calm & Trust)",
+    descBn: "কোবাল্ট ব্লু ও ওশান মিন্ট (শান্ত ও বিশ্বস্ত কর্পোরেট)",
     dots: ["#0284c7", "#0d9488", "#38bdf8"],
     primary: "#0284c7"
   },
+  amethyst: {
+    id: "amethyst",
+    nameEn: "Royal Amethyst",
+    nameBn: "রয়্যাল অ্যামিথিস্ট",
+    descEn: "Imperial Purple & Fuchsia Rose (Luxury & Creative)",
+    descBn: "ইম্পেরিয়াল পার্পল ও ফুসিয়া (রাজকীয় লাক্সারি আর্ট)",
+    dots: ["#7c3aed", "#ec4899", "#f43f5e"],
+    primary: "#7c3aed"
+  },
   emerald: {
     id: "emerald",
-    nameEn: "Emerald Obsidian",
-    nameBn: "এমেরাল্ড ওবসিডিয়ান",
-    descEn: "Cyber Emerald & Mint Jade",
-    descBn: "সাইবার এমেরাল্ড ও মিন্ট জেড",
+    nameEn: "Emerald Oasis",
+    nameBn: "এমেরাল্ড ওয়েসিস",
+    descEn: "Tech Emerald & Mint Jade (Growth & Freshness)",
+    descBn: "সাইবার এমেরাল্ড ও মিন্ট জেড (প্রকৃতির সতেজতা ও প্রবৃদ্ধি)",
     dots: ["#059669", "#10b981", "#34d399"],
     primary: "#059669"
   },
@@ -584,10 +584,55 @@ const RI_PALETTES = {
     id: "sunset",
     nameEn: "Sunset Amber",
     nameBn: "সানসেট অ্যাম্বার",
-    descEn: "Solar Amber & Crimson Flame",
-    descBn: "সোলার গোল্ড ও ক্রিমসন ফ্লেম",
+    descEn: "Solar Amber & Crimson Flame (High-Energy Glow)",
+    descBn: "সোলার গোল্ড ও ক্রিমসন ফ্লেম (উষ্ণতা ও হাই-এনার্জি)",
     dots: ["#ea580c", "#f59e0b", "#f43f5e"],
     primary: "#ea580c"
+  },
+  sakura: {
+    id: "sakura",
+    nameEn: "Sakura Rose & Coral",
+    nameBn: "সাকুরা রোজ ও কোরাল",
+    descEn: "Japanese Blossom Pink & Coral Ruby (Heartwarming Chic)",
+    descBn: "চেরি ব্লসম পিঙ্ক ও কোরাল রুবি (মন জুড়ানো স্নিগ্ধতা)",
+    dots: ["#e11d48", "#fb7185", "#f472b6"],
+    primary: "#e11d48"
+  },
+  ruby: {
+    id: "ruby",
+    nameEn: "Midnight Ruby",
+    nameBn: "মিডনাইট রুবি",
+    descEn: "Deep Blood Ruby & Scarlet Flame (Bold Prestige)",
+    descBn: "ডিপ ব্লাড রুবি ও স্কারলেট ফ্লেম (বোল্ড ও পাওয়ারফুল লাক্সারি)",
+    dots: ["#dc2626", "#ea580c", "#f87171"],
+    primary: "#dc2626"
+  },
+  cyberpunk: {
+    id: "cyberpunk",
+    nameEn: "Tokyo Cyberpunk",
+    nameBn: "টোকিও সাইবারপাঙ্ক",
+    descEn: "Electric Lime & Cyber Yellow (High-Voltage Neon)",
+    descBn: "ইলেকট্রিক নিওন লাইম ও সাইবার ইয়েলো (ফিউচারিস্টিক ম্যাট্রিক্স)",
+    dots: ["#65a30d", "#06b6d4", "#eab308"],
+    primary: "#65a30d"
+  },
+  platinum: {
+    id: "platinum",
+    nameEn: "Titanium Platinum",
+    nameBn: "টাইটানিয়াম প্ল্যাটিনাম",
+    descEn: "Minimalist Slate Platinum & Graphite (Ultra-Clean Class)",
+    descBn: "মেটালিক সিলভার ও গ্রাফাইট (অ্যাপল-স্টাইল মিনিমালিস্টিক)",
+    dots: ["#475569", "#64748b", "#0284c7"],
+    primary: "#475569"
+  },
+  twilight: {
+    id: "twilight",
+    nameEn: "Cosmic Twilight",
+    nameBn: "কসমিক টোয়াইলাইট",
+    descEn: "Deep Galaxy Navy & Orchid Azure (Soothing Celestial)",
+    descBn: "ডিপ গ্যালাক্সি নেভি ও অরকিড ব্লু (শান্ত মহাজাগতিক আকাশ)",
+    dots: ["#2563eb", "#7c3aed", "#60a5fa"],
+    primary: "#2563eb"
   }
 };
 

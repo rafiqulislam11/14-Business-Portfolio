@@ -132,7 +132,7 @@
                   <a href="creative-design.html" class="mega-item">
                     <div class="mega-icon">🎨</div>
                     <div class="mega-text">
-                      <strong>Creative &amp; Graphic Design</strong>
+                      <strong>Creative &amp; Graphic Design <span class="mega-hot-badge">POPULAR</span></strong>
                       <span>Logos, Brand Identity &amp; Packaging</span>
                     </div>
                   </a>
@@ -157,7 +157,7 @@
                   <a href="amazon-kdp.html" class="mega-item">
                     <div class="mega-icon">📚</div>
                     <div class="mega-text">
-                      <strong>Amazon KDP Publishing</strong>
+                      <strong>Amazon KDP Publishing <span class="mega-hot-badge">HOT</span></strong>
                       <span>Layouts, Covers &amp; Keyword SEO</span>
                     </div>
                   </a>
@@ -182,7 +182,7 @@
                   <a href="career-services.html" class="mega-item">
                     <div class="mega-icon">📄</div>
                     <div class="mega-text">
-                      <strong>Career &amp; ATS Resumes</strong>
+                      <strong>Career &amp; ATS Resumes <span class="mega-hot-badge">PRO</span></strong>
                       <span>Executive CVs &amp; LinkedIn Makeover</span>
                     </div>
                   </a>
@@ -211,6 +211,7 @@
           </div>
 
           <a href="portfolio.html" class="nav-link" data-en="Portfolio" data-bn="পোর্টফোলিও"><span>Portfolio</span></a>
+          <a href="cv.html" class="nav-link" data-en="Founder CV" data-bn="সিভি"><span>Founder CV</span><span class="nav-mini-badge">ATS</span></a>
           <a href="packages.html" class="nav-link" data-en="Packages" data-bn="প্যাকেজ"><span>Packages</span></a>
           <a href="track-order.html" class="nav-link" data-en="Track Order" data-bn="ট্র্যাক অর্ডার"><span>Track Order</span></a>
           <a href="dashboard.html" class="nav-link" data-en="Client Portal" data-bn="ক্লায়েন্ট পোর্টাল"><span>Portal</span></a>
@@ -222,11 +223,16 @@
           <button class="theme-toggle" id="theme-toggle-btn" aria-label="Toggle Dark Mode" title="Toggle Dark/Light Mode">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           </button>
+          <a href="assets/CV/Rafiqul-Islam-CV.pdf" download="Rafiqul-Islam-CV.pdf" class="btn-header-cv" title="Download Official Rafiqul Islam CV">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span data-en="Download CV" data-bn="সিভি ডাউনলোড">Download CV</span>
+          </a>
           <a href="quote.html" class="btn btn-secondary header-cta-btn" style="padding: 0.5rem 0.85rem; font-size: 0.82rem;">
             <span>Free Quote</span>
           </a>
-          <a href="start-project.html" class="btn btn-primary header-cta-btn" style="padding: 0.5rem 1rem; font-size: 0.82rem;">
-            <span>Start Project</span>
+          <a href="start-project.html" class="btn-header-primary">
+            <span data-en="Start Project" data-bn="প্রজেক্ট শুরু করুন">Start Project</span>
+            <span class="cta-arrow">→</span>
           </a>
           <button class="menu-toggle" id="mobile-menu-btn" aria-label="Toggle Mobile Navigation">
             <span class="hamburger-bar"></span>
@@ -260,6 +266,8 @@
 
       <nav class="drawer-nav">
         <a href="index.html" class="drawer-link active"><span>🏠 Home</span></a>
+        <a href="about.html" class="drawer-link"><span>🏢 About Agency</span></a>
+        <a href="cv.html" class="drawer-link" style="display: flex; align-items: center; justify-content: space-between;"><span>📄 Founder CV / Resume</span><span class="nav-mini-badge">ATS</span></a>
         <a href="services.html" class="drawer-link"><span>⚡ All 13 Services</span></a>
         <a href="portfolio.html" class="drawer-link"><span>💼 Portfolio Showcase</span></a>
         <a href="case-studies.html" class="drawer-link"><span>📈 Case Studies</span></a>
@@ -270,6 +278,13 @@
         <a href="dashboard.html" class="drawer-link"><span>📊 Client Portal</span></a>
         <a href="contact.html" class="drawer-link"><span>✉️ Contact Hub</span></a>
       </nav>
+
+      <div style="margin: 0.75rem 0;">
+        <a href="assets/CV/Rafiqul-Islam-CV.pdf" download="Rafiqul-Islam-CV.pdf" class="btn btn-secondary btn-block" style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 0.85rem; padding: 0.65rem 1rem;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span data-en="Download Official CV (PDF)" data-bn="অফিসিয়াল সিভি ডাউনলোড">Download Official CV (PDF)</span>
+        </a>
+      </div>
 
       <div class="drawer-contact-card">
         <div class="drawer-contact-title">Direct Office &amp; Founder</div>
@@ -315,8 +330,12 @@
                     <a href="start-project.html" class="btn btn-primary btn-lg">
                       <span>Start Project →</span>
                     </a>
-                    <a href="quote.html" class="btn btn-secondary btn-lg">
-                      <span>Get Free Quote</span>
+                    <a href="assets/CV/Rafiqul-Islam-CV.pdf" download="Rafiqul-Islam-CV.pdf" class="btn btn-secondary btn-lg" title="Download Official Rafiqul Islam CV (PDF)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                      <span data-en="Download CV" data-bn="সিভি ডাউনলোড">Download CV</span>
+                    </a>
+                    <a href="cv.html" class="btn btn-secondary btn-lg">
+                      <span>📄 View CV Page</span>
                     </a>
                     <a href="https://wa.me/8801310824987?text=Hello%20Rafiqul%20Islam,%20I%20would%20like%20to%20consult%20about%20a%20project." target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-lg">
                       <span>WhatsApp: 01310-824987</span>
@@ -1516,6 +1535,7 @@
           <h4 class="footer-title">Operations</h4>
           <div class="footer-links">
             <a href="about.html">About Founder Rafiqul Islam</a>
+            <a href="cv.html">Founder Official CV / Resume (PDF)</a>
             <a href="faq.html">FAQ &amp; Client Policies</a>
             <a href="login.html">Client Workspace Sign In</a>
             <a href="admin.html">Operations Admin Portal</a>
